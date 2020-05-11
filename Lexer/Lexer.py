@@ -9,8 +9,12 @@ class Lexer:
         self.word = Word_tokenizer(self.buf)
         self.number = Number_tokenizer(self.buf)
         self.symbol = Symbol_tokenizer(self.buf)
+        self.ct = None
 
-    def parse_token(self):
+    def current_token(self):
+        return self.ct
+
+    def next_token(self):
         c = self.buf.go_forward()
         while c.isspace():
             c = self.buf.go_forward()
@@ -24,6 +28,7 @@ class Lexer:
         elif c == '':
             token = Token("END")
         self.buf.consume()
+        self.ct = token
         return token
 
     def print_token(self, token):

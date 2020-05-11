@@ -1,5 +1,6 @@
 from Lexer.Buffer import Buffer
 from Lexer.Lexer import Lexer
+from Parser.Parser import Parser
 
 def testBuffer():
     print("Testing Buffer")
@@ -19,10 +20,18 @@ def testBuffer():
 def testLexer():
     print("Testing Lexer")
     lex = Lexer("example.toy")
-    token = lex.parse_token()
+    token = lex.next_token()
     while token.kind != "END":
-        token = lex.parse_token()
+        token = lex.next_token()
         lex.print_token(token)
         print(token.kind)
     print("Done testing Lexer")
-testLexer()
+
+def testParser():
+    print("Testing Parser")
+    lex  = Lexer("simple.toy")
+    parser = Parser(lex)
+    parser.parse()
+    print("Done testing Parser")
+
+testParser()
