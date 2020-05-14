@@ -10,6 +10,7 @@ class Word_tokenizer:
             val += c
             c = self.buf.go_forward()
         self.buf.go_backward()
-        res = Token("word")
-        res.attributes["val"] = val
+        res = Token()
+        res.typ = "word"
+        res.lexeme = val
         return res

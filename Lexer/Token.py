@@ -1,4 +1,6 @@
 class Token:
-    def __init__(self, kind):
-        self.kind = kind
-        self.attributes = {"val": None}
+    def __init__(self):
+        self.typ = None
+        self.lexeme = ""
+        self.value = None
+        self.attributes = {}

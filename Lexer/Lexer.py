@@ -26,11 +26,12 @@ class Lexer:
         elif c in Symbol_tokenizer.acceptable_symbols:
             token = self.symbol.extract()
         elif c == '':
-            token = Token("END")
+            token = Token()
+            token.typ = "END"
         self.buf.consume()
         self.ct = token
         return token
 
     def print_token(self, token):
-        print("Token type: {} \t Attributes: {}".format(token.kind, token.attributes))
+        print("Token type: {} \t Lexeme: {} \t Attributes: {}".format(token.typ, token.lexeme, token.attributes))
 

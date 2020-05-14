@@ -10,10 +10,14 @@ class Symbol_tokenizer:
         val = ""
         a = self.buf.go_forward()
         b = self.buf.go_forward()
+        res = Token()
+        res.typ = "symbol"
         if b != "" and a + b in self.acceptable_operators:
-            return Token(a + b)
+            res.lexeme = a + b
+            return res
         elif a in self.acceptable_operators:
+            res.lexeme = a
             self.buf.go_backward()
-            return Token(a)
+            return res
         else:
             raise Exception("Invalid symbol token")

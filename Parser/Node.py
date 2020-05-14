@@ -1,6 +1,6 @@
 class Node():
     def __init__(self):
-        self.kind = None
+        self.typ = None
         self.attributes = {}
         self.children = []
 

@@ -1,8 +1,10 @@
 from Lexer.Buffer import Buffer
 from Lexer.Lexer import Lexer
-from Parser.Parser import Parser
+from Parser.Statement_parser import Statement_parser
+from Executor.Statement_executor import Statement_executor
+from Executor.Symbol_table import *
 
-def testBuffer():
+def test_buffer():
     print("Testing Buffer")
     buf = Buffer("empty.toy")
 
@@ -17,21 +19,54 @@ def testBuffer():
         c = buf.go_backward()
     print("Done testing Buffer")
 
-def testLexer():
+def test_lexer():
     print("Testing Lexer")
     lex = Lexer("example.toy")
     token = lex.next_token()
-    while token.kind != "END":
+    while token.typ != "END":
         token = lex.next_token()
         lex.print_token(token)
-        print(token.kind)
     print("Done testing Lexer")
 
-def testParser():
+def test_parser():
     print("Testing Parser")
     lex  = Lexer("simple.toy")
-    parser = Parser(lex)
-    parser.parse()
+    parser = Root_parser(lex)
+    root = parser.parse()
+    print_parse_tree(root, 0)
     print("Done testing Parser")
 
-testParser()
+def print_parse_tree(root, indent):
+    st = "\t"*indent + " " + root.typ
+    if root.attributes:
+        st += " Attributes: {}".format(root.attributes)
+    print(st)
+    for child in root.children:
+        print_parse_tree(child, indent + 1)
+
+def test_executor():
+    print("Testing Executor")
+    lex  = Lexer("simple.toy")
+    stat_parser = Statement_parser(lex)
+    stat_list = stat_parser.parse_statement_list()
+    print_parse_tree(stat_list, 0)
+    st_stack = Symbol_table_stack()
+    st_stack.push_table()
+    stat_executor = Statement_executor(st_stack)
+    stat_executor.execute_statement_list(stat_list)
+    print(st_stack)
+    print("Done testing Executor")
+
+def test_symbol_table():
+    st_stack = Symbol_table_stack()
+    st_stack.push_table()
+    st_stack.insert("x", 1)
+    st_stack.push_table()
+    st_stack.insert("x", 2)
+    print(st_stack)
+    print(st_stack.get("x"))
+    st_stack.pop_table()
+    print(st_stack.get("x"))
+    print(st_stack)
+
+test_executor()

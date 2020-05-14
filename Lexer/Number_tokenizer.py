@@ -4,6 +4,7 @@ class Number_tokenizer:
         self.buf = buf
 
     def extract(self):
+        res = Token()
         def getDigits():
             c = self.buf.go_forward()
             val = ""
@@ -18,8 +19,10 @@ class Number_tokenizer:
             if after_decimal == "":
                 raise Exception("Invalid number token")
             val += "." + after_decimal
-        self.buf.go_backward()
+            res.typ = "double"
+        else:
+            res.typ = "int"
 
-        res = Token("float")
-        res.attributes["val"] = val
+        self.buf.go_backward()
+        res.lexeme = val
         return res
