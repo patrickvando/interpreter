@@ -4,9 +4,9 @@ from Parser.Statement_parser import Statement_parser
 from Executor.Statement_executor import Statement_executor
 from Executor.Symbol_table import *
 
-def test_buffer():
+def test_buffer(filename):
     print("Testing Buffer")
-    buf = Buffer("empty.toy")
+    buf = Buffer(filename)
 
     c = buf.go_forward()
     while c != "":
@@ -19,21 +19,21 @@ def test_buffer():
         c = buf.go_backward()
     print("Done testing Buffer")
 
-def test_lexer():
+def test_lexer(filename):
     print("Testing Lexer")
-    lex = Lexer("example.toy")
+    lex = Lexer(filename)
     token = lex.next_token()
     while token.typ != "END":
         token = lex.next_token()
         lex.print_token(token)
     print("Done testing Lexer")
 
-def test_parser():
+def test_parser(filename):
     print("Testing Parser")
-    lex  = Lexer("simple.toy")
-    parser = Root_parser(lex)
-    root = parser.parse()
-    print_parse_tree(root, 0)
+    lex  = Lexer(filename)
+    stat_parser = Statement_parser(lex)
+    stat_list = stat_parser.parse_statement_list()
+    print_parse_tree(stat_list, 0)
     print("Done testing Parser")
 
 def print_parse_tree(root, indent):
@@ -44,9 +44,9 @@ def print_parse_tree(root, indent):
     for child in root.children:
         print_parse_tree(child, indent + 1)
 
-def test_executor():
+def test_executor(filename):
     print("Testing Executor")
-    lex  = Lexer("simple.toy")
+    lex  = Lexer(filename)
     stat_parser = Statement_parser(lex)
     stat_list = stat_parser.parse_statement_list()
     print_parse_tree(stat_list, 0)
@@ -69,4 +69,14 @@ def test_symbol_table():
     print(st_stack.get("x"))
     print(st_stack)
 
-test_executor()
+def test_if_parser():
+    print("Testing if Parser")
+    lex  = Lexer("if.toy")
+    stat_parser = Statement_parser(lex)
+    stat_list = stat_parser.parse_statement_list()
+    print_parse_tree(stat_list, 0)
+    print("Done testing if Parser")
+
+
+test_executor("g.toy")
+#test_parser("g.toy")

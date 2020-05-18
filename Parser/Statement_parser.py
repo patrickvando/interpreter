@@ -1,82 +1,114 @@
-from .Data_types import Data_types
 from .Node import Node
+from .Data_types import Data_types
+from .Utilities import Utilities
 from .Expression_parser import Expression_parser
-from .Construct_parser import Construct_parser
-
 class Statement_parser:
     def __init__(self, lexer):
         self.lexer = lexer
-        self.exp_parser = Expression_parser(lexer)
+        self.util = Utilities(lexer)
     
     def parse_statement_list(self):
         current_token = self.lexer.next_token()
-        list_node = Node()
-        list_node.typ = "STATEMENT_LIST"
+        listat_node = Node()
+        listat_node.typ = "STATEMENT_LIST"
         while current_token.typ != "END":
-            list_node.add_child(self.parse_statement())
+            listat_node.add_child(self.parse_statement())
             current_token = self.lexer.current_token()
-        return list_node        
+        return listat_node        
 
     def parse_body(self):
-        #consume {
-        ct = self.lexer.next_token()
-        list_node = Node()
-        list_node.typ = "STATEMENT_LIST"
-        while ct.typ != "}":
-            list_node.add_child(self.parse_statement())
+        self.util.match("{")
+        ct = self.lexer.current_token()
+        listat_node = Node()
+        listat_node.typ = "STATEMENT_LIST"
+        while ct.lexeme != "}":
+            listat_node.add_child(self.parse_statement())
             ct = self.lexer.current_token()
-        #consume }
-        self.lexer.next_token()
-        return list_node
+        self.util.match("}")
+        return listat_node
     
     def parse_statement(self):
         ct = self.lexer.current_token()
-        st_node = Node()
+        stat_node = Node()
         res_node = None
-        if ct.lexeme in Data_types.types:
-            st_node.attributes["type"] = ct.lexeme
+        if ct.lexeme == "return":
+            res_node = self.parse_return_statement()
+            self.util.match(";")
+        elif ct.lexeme in Data_types.types:
             ct = self.lexer.next_token()
-            st_node.attributes["identifier"] = ct.lexeme
+            stat_node.attributes["identifier"] = ct.lexeme
             ct = self.lexer.next_token()
             if ct.lexeme == "(":
-                res_node = self.parse_function_declaration(st_node)
+                stat_node.attributes["return_type"] = ct.lexeme
+                res_node = self.parse_function_declaration(stat_node)
             elif ct.lexeme == "=":
-                res_node = self.parse_variable_declaration(st_node)
+                stat_node.attributes["type"] = ct.lexeme
+                res_node = self.parse_variable_declaration(stat_node)
+                self.util.match(";")
         elif ct.lexeme in Data_types.constructs:
-            pass
+            con_parser = Construct_parser(self.lexer)
+            res_node = con_parser.parse_construct()
         else:
-            st_node.attributes["identifier"] = ct.lexeme
+            stat_node.attributes["identifier"] = ct.lexeme
             ct = self.lexer.next_token()
             if ct.lexeme == "(":
-                res_node = self.parse_function_call(st_node)
+                exp_parser = Expression_parser(self.lexer)
+                res_node = exp_parser.parse_function_call(stat_node)
+                self.util.match(";")
             elif ct.lexeme == "=":
-                res_node = self.parse_variable_assignment(st_node)
-        #Consume semicolon
-        self.lexer.next_token()
+                res_node = self.parse_variable_assignment(stat_node)
+                self.util.match(";")
         return res_node
-
-    def parse_variable_declaration(self, st_node):
-        st_node.typ = "VARIABLE"
-        assign_node = Node()
-        assign_node.typ = "DECLARE"
-        assign_node.add_child(st_node)
+    
+    def parse_return_statement(self):
+        return_node = Node()
+        return_node.typ = "RETURN"
         self.lexer.next_token()
-        assign_node.add_child(self.exp_parser.parse_expression())
+        exp_parser = Expression_parser(self.lexer)
+        return_node.add_child(exp_parser.parse_expression())
+        return return_node 
+
+    def parse_variable_declaration(self, stat_node):
+        stat_node.typ = "VARIABLE"
+        assign_node = Node()
+        assign_node.typ = "VARIABLE_DECLARATION"
+        assign_node.add_child(stat_node)
+        self.lexer.next_token()
+        exp_parser = Expression_parser(self.lexer)
+        assign_node.add_child(exp_parser.parse_expression())
         return assign_node
 
-    def parse_function_declaration(self):
-        pass
+    
+    def parse_function_declaration(self, stat_node):
+        stat_node.typ = "FUNCTION"
+        self.util.match("(")
+        ct = self.lexer.current_token()
+        arg_node = Node()
+        arg_node.typ = "ARGUMENTS"
+        while ct.lexeme != ")":
+            var_node = Node()
+            var_node.typ = "VARIABLE"
+            var_node.attributes["type"] = self.lexer.current_token().lexeme
+            var_node.attributes["identifier"] = self.lexer.next_token().lexeme
+            self.lexer.next_token()
+            self.util.match_if_present(",")
+            arg_node.add_child(var_node)
+            ct = self.lexer.current_token()
+        self.util.match(")")
+        stat_node.add_child(arg_node)
+        stat_node.add_child(self.parse_body())
+        return stat_node
 
-    def parse_function_call(self):
-        pass
-
-    def parse_variable_assignment():
-        st_node.typ = "VARIABLE"
+    def parse_variable_assignment(self, stat_node):
+        stat_node.typ = "VARIABLE"
         assign_node = Node()
         assign_node.typ = "ASSIGN"
-        assign_node.add_child(st_node)
-        self.lexer.next_token()
-        assign_node.add_child(self.exp_parser.parse_expression())
+        assign_node.add_child(stat_node)
+        self.util.match("=")
+        exp_parser = Expression_parser(self.lexer)
+        assign_node.add_child(exp_parser.parse_expression())
         return assign_node
 
-
+from .Expression_parser import Expression_parser
+from .Construct_parser import Construct_parser
+   

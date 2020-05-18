@@ -1,8 +1,8 @@
 from .Token import Token
 class Symbol_tokenizer:
     # + - { } != || && == <= => ++ -- / *
-    acceptable_symbols = set("+-{}!|&=<>/*[]();")
-    acceptable_operators = set(["+", "-", "{", "}", "!", "||", "&&", "==", "<=", ">=", "++", "--", "/", "*", "!=", "[", "]", "(", ")", ";", "="])
+    acceptable_symbols = set("+-{}!|&=<>/*[]();,%")
+    acceptable_operators = set(["+", "-", "{", "}", "!", "||", "&&", "==", "<=", ">=", "++", "--", "/", "*", "!=", "[", "]", "(", ")", ";", "=", ',', '<', '>', '%'])
     def __init__(self, buf):
         self.buf = buf
 

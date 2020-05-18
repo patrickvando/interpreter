@@ -3,3 +3,7 @@ change "val" from attributes -> to lexeme
 inside of the parser collapse variable declaration and variable assignment to same thing
 
 add reserved keywords in parsing stagesyntax tree?
+
+change the name of Lexer in lexer class, bad namespacing
+
+need WAY better error recovery -> plenty of infinite loops
