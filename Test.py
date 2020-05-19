@@ -79,4 +79,4 @@ def test_if_parser():
 
 filename = input()
 test_executor(filename)
-test_parser(filename)
+#test_parser(filename)

@@ -73,7 +73,7 @@ class Expression_parser:
             nt = self.lexer.next_token()
             if nt.lexeme == "(":
                 self.lexer.prev_token()
-                res_node = self.parse_function_call()
+                return self.parse_function_call()
             elif nt.lexeme == "++" or ct.lexeme == "--":
                 self.lexer.prev_token()
                 return self.parse_postincrement_postdecrement()
@@ -127,6 +127,7 @@ class Expression_parser:
 
     def parse_function_call(self):
         ct = self.lexer.current_token()
+        func_node = Node()
         func_node.attributes["identifier"] = ct.lexeme
         func_node.typ = "FUNCTION_CALL"
         #consume identifier

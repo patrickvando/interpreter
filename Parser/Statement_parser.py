@@ -6,83 +6,107 @@ class Statement_parser:
     def __init__(self, lexer):
         self.lexer = lexer
         self.util = Utilities(lexer)
-    
+   
+    #parse tokens from the beginning of the file to the end
     def parse_statement_list(self):
         current_token = self.lexer.next_token()
         listat_node = Node()
         listat_node.typ = "STATEMENT_LIST"
         while current_token.typ != "END":
-            listat_node.add_child(self.parse_statement())
+            listat_node.add_child(self.parse_body_statement())
             current_token = self.lexer.current_token()
         return listat_node        
 
+    #parse tokens within a construct or function
     def parse_body(self):
         self.util.match("{")
         ct = self.lexer.current_token()
         listat_node = Node()
         listat_node.typ = "STATEMENT_LIST"
         while ct.lexeme != "}":
-            listat_node.add_child(self.parse_statement())
+            listat_node.add_child(self.parse_body_statement())
             ct = self.lexer.current_token()
         self.util.match("}")
         return listat_node
-   
+ 
+    #parse all statements allowed in the body of a function
+    #return statements, function declarations, function calls, increment/decrement, variable declarations, variable assignments, if/while/for constructs
     def parse_body_statement(self):
-        pass
-
-    def parse_statement(self):
         ct = self.lexer.current_token()
-        stat_node = Node()
-        res_node = None
+        #parse return statement
         if ct.lexeme == "return":
             res_node = self.parse_return_statement()
             self.util.match(";")
+            return res_node
+        #parse if/while/for constructs
+        elif ct.lexeme in Data_types.constructs:
+            con_parser = Construct_parser(self.lexer)
+            res_node = con_parser.parse_construct()
+            res_node.attributes["CONSTRUCT"] = True
+            return res_node
+        #parse function declarations
         elif ct.lexeme in Data_types.types:
             #match data type
             ct = self.lexer.next_token()
             #match identifier
             ct = self.lexer.next_token()
+            self.lexer.prev_token()
+            self.lexer.prev_token()
             if ct.lexeme == "(":
-                self.lexer.prev_token()
-                self.lexer.prev_token()
                 res_node = self.parse_function_declaration()
-            elif ct.lexeme == "=":
-                self.lexer.prev_token()
-                self.lexer.prev_token()
+                return res_node
+        #parse remaining statement options
+        res_node = self.parse_statement()
+        self.util.match(";")
+        return res_node
+
+    #parse function calls, increment/decrement, variable declarations, variable assignments
+    def parse_statement(self):
+        ct = self.lexer.current_token()
+        #parse variable declaration
+        if ct.lexeme in Data_types.types:
+            #match data type
+            ct = self.lexer.next_token()
+            #match identifier
+            ct = self.lexer.next_token()
+            self.lexer.prev_token()
+            self.lexer.prev_token()
+            if ct.lexeme == "=":
                 res_node = self.parse_variable_declaration()
-                self.util.match(";")
-        elif ct.lexeme in Data_types.constructs:
-            con_parser = Construct_parser(self.lexer)
-            res_node = con_parser.parse_construct()
-            res_node.attributes["CONSTRUCT"] = True
+                #self.util.match(";")
+                return res_node
+        #parse preincrement/predecrement
         elif ct.lexeme == "++" or ct.lexeme == "--":
             exp_parser = Expression_parser(self.lexer)
             res_node = exp_parser.parse_preincrement_predecrement()
-            self.util.match(";")
+            #self.util.match(";")
+            return res_node
         else:
-            #consume identifier
+            #parse function calls
             ct = self.lexer.next_token()
+            self.lexer.prev_token()
             if ct.lexeme == "(":
-                self.lexer.prev_token()
                 exp_parser = Expression_parser(self.lexer)
                 res_node = exp_parser.parse_function_call()
-                self.util.match(";")
+                #self.util.match(";")
+                return res_node
+            #parse variable assignment
             elif ct.lexeme == "=":
-                self.lexer.prev_token()
                 res_node = self.parse_variable_assignment()
-                self.util.match(";")
+                #self.util.match(";")
+                return res_node
+            #parse postincrement/postdecrement
             elif ct.lexeme == "++" or ct.lexeme == "--":
-                self.lexer.prev_token()
                 exp_parser = Expression_parser(self.lexer)
                 res_node = exp_parser.parse_postincrement_postdecrement()
-                self.util.match(";")
-        return res_node
-   
+                #self.util.match(";")
+                return res_node
+        return None
     
     def parse_return_statement(self):
         return_node = Node()
         return_node.typ = "RETURN"
-        self.lexer.next_token()
+        self.util.match("return")
         exp_parser = Expression_parser(self.lexer)
         return_node.add_child(exp_parser.parse_expression())
         return return_node 

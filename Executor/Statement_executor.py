@@ -23,7 +23,7 @@ class Statement_executor():
             self.execute_function_declaration(root)
         elif root.typ == "++" or "--":
             exp_executor = Expression_executor(self.st_stack)
-            return exp_executor.execute_expression(root)
+            exp_executor.execute_expression(root)
         return None
 
     def execute_function_declaration(self, root):
