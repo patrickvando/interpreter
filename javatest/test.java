@@ -1,11 +1,11 @@
 class test {
     public static void main(String[] args){
-        int x = 1;
-        int inner(){
-            x += 1;
+        int k = 0;
+        for(one(); k < 10; k++){
+        System.out.println(k);
         }
-        inner();
-        System.out.println("hello world");
-        System.out.println(x);
+    }
+    public static int one(){
+        return 1;
     }
 }

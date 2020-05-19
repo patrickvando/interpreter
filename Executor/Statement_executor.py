@@ -21,6 +21,9 @@ class Statement_executor():
             return con_executor.execute_construct(root)
         elif root.typ == "FUNCTION":
             self.execute_function_declaration(root)
+        elif root.typ == "++" or "--":
+            exp_executor = Expression_executor(self.st_stack)
+            return exp_executor.execute_expression(root)
         return None
 
     def execute_function_declaration(self, root):

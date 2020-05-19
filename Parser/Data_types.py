@@ -5,4 +5,5 @@ class Data_types:
     relational_ops = set(["<", ">", "==", "<=", ">=", "!="])
     simple_ops = set(["+", "-", "||"])
     term_ops = set(["*", "/", "%", "&&"])
+    unary_ops = set(["++", "--"])
     booleans = {"true": True, "false": False}

@@ -7,3 +7,14 @@ add reserved keywords in parsing stagesyntax tree?
 change the name of Lexer in lexer class, bad namespacing
 
 need WAY better error recovery -> plenty of infinite loops
+
+
+what features?
+for
+else
+string
+boolean
+increment/decrement
+
+figure out what statements should be allowed in for loop, and how to parse them
+...or just leave out for loops? need to move on?

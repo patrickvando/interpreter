@@ -5,6 +5,7 @@ class Utilities:
     def match(self, expected):
         ct = self.lexer.current_token()
         if ct.lexeme == expected:
+            self.lexer.consume()
             self.lexer.next_token()
         else:
             raise Exception("Unexpected token")

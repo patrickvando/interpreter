@@ -52,6 +52,10 @@ class Expression_executor:
             return self.execute_ge(root)
         elif root.typ == "<":
             return self.execute_le(root)
+        elif root.typ == "++":
+            return self.execute_increment(root)
+        elif root.typ == "--":
+            return self.execute_decrement(root)
 
     def execute_add(self, root):
         if len(root.children) == 1:
@@ -60,6 +64,26 @@ class Expression_executor:
             left = self.execute_expression(root.children[0])
             right = self.execute_expression(root.children[1])
             return left + right
+    
+    def execute_increment(self, root):
+        var = root.children[0]
+        entry = self.st_stack.get(var.attributes["identifier"])
+        val = entry["val"]
+        self.st_stack.update(var.attributes["identifier"], {"val": val + 1})
+        if root.attributes["pre"]:
+            return val + 1
+        else:
+            return val 
+
+    def execute_decrement(self, root):
+        var = root.children[0]
+        entry = self.st_stack.get(var.attributes["identifier"])
+        val = entry["val"]
+        self.st_stack.update(var.attributes["identifier"], {"val": val - 1})
+        if root.attributes["pre"]:
+            return val - 1
+        else:
+            return val 
 
     def execute_subtract(self, root):
         if len(root.children) == 1:

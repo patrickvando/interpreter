@@ -77,6 +77,6 @@ def test_if_parser():
     print_parse_tree(stat_list, 0)
     print("Done testing if Parser")
 
-
-test_executor("g.toy")
-#test_parser("g.toy")
+filename = input()
+test_executor(filename)
+test_parser(filename)
