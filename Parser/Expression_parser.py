@@ -77,6 +77,18 @@ class Expression_parser:
             elif nt.lexeme == "++" or ct.lexeme == "--":
                 self.lexer.prev_token()
                 return self.parse_postincrement_postdecrement()
+            elif ct.lexeme == "true":
+                res_node = Node()
+                res_node.typ = "CONSTANT"
+                res_node.attributes["type"] = "bool"
+                res_node.attributes["val"] = True
+                return res_node
+            elif ct.lexeme == "false":
+                res_node = Node()
+                res_node.typ = "CONSTANT"
+                res_node.attributes["type"] = "bool"
+                res_node.attributes["val"] = False
+                return res_node
             else:
                 res_node = Node()
                 res_node.typ = "VARIABLE"
