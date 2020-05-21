@@ -1,8 +1,0 @@
-int y = 2;
-int main(int y){
-    if (y >= 10){
-        return y;
-    }
-    return main(y + 1);
-}
-int z = main(y);

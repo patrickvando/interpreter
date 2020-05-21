@@ -1,2 +1,0 @@
-bool x = false || true;
-int y = 5 + 10;

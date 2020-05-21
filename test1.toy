@@ -1,4 +1,0 @@
-int a = 1 + func() + 5;
-if (a == 1){
-    int b = main() + side() + main();
-}
