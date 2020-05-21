@@ -1,6 +1,6 @@
 # Simple Interpreter
 
-Usage: `python3 simple_interpreter.py gcd.simple`
+Example Usage: `python3 simple_interpreter.py gcd.simple`
 
 ## Overview
 
@@ -10,7 +10,10 @@ Right now, the interpreter supports functions, integer/boolean operations, and i
 
 For further details on what features have (and have not) been implemented in the interpreter, see the *Current State* section. For details on the language specifications of the ".simple" language, see the ".simple" section.
 
-# Current State
+## Current State
 
+Right now, the interpreter consists of a three stage process (each with a corresponding directory in the project): the lexical analysis stage (Lexer), the semantic analysis stage (Parser) and the interpreter stage (Interpreter). 
 
-# ".simple" Language Specifications
+The lexical analysis 
+
+## ".simple" Language Specifications
