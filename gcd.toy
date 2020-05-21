@@ -1,0 +1,18 @@
+int a = 1071;
+int b = 462;
+a = 30;
+b = 20;
+int gcd(int a, int b){
+    if (a > b){
+        int c = a;
+        a = b;
+        b = c;
+    }
+    if (b % a == 0){
+        return a;
+    } else {
+        return gcd(b % a, a);
+    }
+}
+int greatest_common_divisor = gcd(a, b);
+print(greatest_common_divisor);

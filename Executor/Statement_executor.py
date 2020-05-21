@@ -24,6 +24,8 @@ class Statement_executor():
         elif root.typ == "++" or "--":
             exp_executor = Expression_executor(self.st_stack)
             exp_executor.execute_expression(root)
+        if root.typ == "PRINT":
+            self.execute_print_statement(root)
         return None
 
     def execute_function_declaration(self, root):
@@ -44,7 +46,8 @@ class Statement_executor():
 
     def execute_return_statement(self, root):
         exp_executor = Expression_executor(self.st_stack)
-        return exp_executor.execute_expression(root.children[0])
+        rv = exp_executor.execute_expression(root.children[0])
+        return rv;
 
 from .Data_types import Data_types
 from .Expression_executor import Expression_executor

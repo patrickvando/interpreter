@@ -46,17 +46,53 @@ class Construct_parser:
         while_node.add_child(stat_parser.parse_body())
         return while_node
 
+    #need to add branch off if -> sub node -> one option for each "elif"
     def parse_if(self):
         self.util.match("if") 
         self.util.match("(")
         if_node = Node()
         if_node.typ = "IF"
         exp_parser = Expression_parser(self.lexer)
-        if_node.add_child(exp_parser.parse_expression())
+        option_node = Node()
+        option_node.typ = "OPTION"
+        if_node.add_child(option_node)
+        option_node.add_child(exp_parser.parse_expression())
         self.util.match(")")
         stat_parser = Statement_parser(self.lexer)
-        if_node.add_child(stat_parser.parse_body())
+        option_node.add_child(stat_parser.parse_body())
+        ct = self.lexer.current_token()
+        while ct.lexeme == "elseif":
+            if_node.add_child(self.parse_elseif())
+            ct = self.lexer.current_token()
+        if ct.lexeme == "else":
+            if_node.add_child(self.parse_else())
         return if_node
+
+    def parse_elseif(self):
+        self.util.match("elseif") 
+        self.util.match("(")
+        exp_parser = Expression_parser(self.lexer)
+        option_node = Node()
+        option_node.typ = "OPTION"
+        option_node.add_child(exp_parser.parse_expression())
+        self.util.match(")")
+        stat_parser = Statement_parser(self.lexer)
+        option_node.add_child(stat_parser.parse_body())
+        return option_node
+
+    def parse_else(self):
+        self.util.match("else") 
+        exp_parser = Expression_parser(self.lexer)
+        option_node = Node()
+        option_node.typ = "OPTION"
+        true_node = Node()
+        true_node.typ = "CONSTANT"
+        true_node.attributes["type"] = "bool"
+        true_node.attributes["val"] = True
+        option_node.add_child(true_node)
+        stat_parser = Statement_parser(self.lexer)
+        option_node.add_child(stat_parser.parse_body())
+        return option_node
 
 
 from .Expression_parser import Expression_parser

@@ -12,11 +12,12 @@ class Construct_executor:
 
     def execute_if(self, root):
         exp_executor = Expression_executor(self.st_stack)
-        res = exp_executor.execute_expression(root.children[0])
-        if res == False:
-            return
         stat_executor = Statement_executor(self.st_stack)
-        return stat_executor.execute_statement_list(root.children[1])
+        for option_node in root.children:
+            condition, body = option_node.children
+            res = exp_executor.execute_expression(condition)
+            if res:
+                return stat_executor.execute_statement_list(body)
 
     def execute_while(self, root):
         exp_executor = Expression_executor(self.st_stack)

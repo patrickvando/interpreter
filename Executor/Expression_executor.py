@@ -3,15 +3,26 @@ class Expression_executor:
         self.st_stack = st_stack
 
     def execute_function(self, root):
-        entry = self.st_stack.get(root.attributes["identifier"])
+        func_identifier = root.attributes["identifier"]
+        given_args = root.children[0].children
+        if func_identifier in Built_ins.funcs:
+            args = []
+            for arg in given_args:
+                args.append(self.execute_expression(arg))
+            return Built_ins.execute_func(func_identifier, args)
+
+        entry = self.st_stack.get(func_identifier)
         function = entry["function"]
         expected_args = function.children[0].children
         function_body = function.children[1]
-        given_args = root.children[0].children
         self.st_stack.push_table()
+        arg_pairs = []
         for k in range(len(expected_args)):
             arg_val = self.execute_expression(given_args[k])
             arg_identifier = expected_args[k].attributes["identifier"]
+            arg_pairs.append((arg_identifier,arg_val))
+        for arg_pair in arg_pairs:
+            arg_identifier, arg_val = arg_pair
             self.st_stack.insert(arg_identifier, {"val": arg_val})
         stat_executor = Statement_executor(self.st_stack)
         return_val = stat_executor.execute_statement_list(function_body)
@@ -150,3 +161,4 @@ class Expression_executor:
 
 from .Statement_executor import Statement_executor
 from .Symbol_table import Symbol_table_stack
+from .Built_ins import Built_ins

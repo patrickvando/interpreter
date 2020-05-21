@@ -18,3 +18,7 @@ increment/decrement
 
 figure out what statements should be allowed in for loop, and how to parse them
 ...or just leave out for loops? need to move on?
+
+add boolean, then move on to next project
+
+name conflict between function param and passed in param?
