@@ -4,24 +4,19 @@ class Expression_executor:
 
     def execute_function(self, root):
         func_identifier = root.attributes["identifier"]
-        given_args = root.children[0].children
+        given_arg_node = root.children[0]
+        given_args = []
+        for arg in given_arg_node.children:
+            given_args.append(self.execute_expression(arg))
         if func_identifier in Built_ins.funcs:
-            args = []
-            for arg in given_args:
-                args.append(self.execute_expression(arg))
-            return Built_ins.execute_func(func_identifier, args)
-
+            return Built_ins.execute_func(func_identifier, given_args)
         entry = self.st_stack.get(func_identifier)
         function = entry["function"]
-        expected_args = function.children[0].children
+        expected_arg_node = function.children[0]
         function_body = function.children[1]
         self.st_stack.push_table()
-        arg_pairs = []
-        for k in range(len(expected_args)):
-            arg_val = self.execute_expression(given_args[k])
-            arg_identifier = expected_args[k].attributes["identifier"]
-            arg_pairs.append((arg_identifier,arg_val))
-        for arg_pair in arg_pairs:
+        expected_args = [arg.attributes["identifier"] for arg in expected_arg_node.children]
+        for arg_pair in zip(expected_args, given_args):
             arg_identifier, arg_val = arg_pair
             self.st_stack.insert(arg_identifier, {"val": arg_val})
         stat_executor = Statement_executor(self.st_stack)
