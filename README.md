@@ -57,7 +57,31 @@ The interpreter stage evaluates the parse tree recursively. Arithmetic/boolean o
 
 ### Variable Declarations
 
+Variable declarations take the following form:
+
+`type identifier = expression;`
+
+For example, 
+
+`int x = 1 * (2 + 3);`
+
 ### Function Declarations
+
+Functions declarations take the following form:
+
+`type identifier ( type arg1, type arg2, type arg3) {
+    *body*
+}`
+
+For example:
+
+`int fib(int num) {
+    if ((num == 1) || (num == 2)){
+        return 1;
+    } else {
+        return fib(num - 1) + fib(num - 2);
+    }
+}`
 
 ### Function Calls
 
