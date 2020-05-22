@@ -24,23 +24,36 @@ The interpreter stage evaluates the parse tree recursively. Arithmetic/boolean o
 
 ## ".simple" Language Specifications
 
-###Supported operators
+### Supported operators
 
-| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
+#### Binary operators
 
-###Variable declarations
+| Operator   | Symbol   |
+| ---------- | :------: |
+| Add        | +        |
+| Subtract   | -        |
+| Multiply   | *        |
+| Divide     | /        |
+| Modulus    | %        |
+| Or         | ||       |
+| And        | &&       |
+| EQ         | ==       |
+| NE         | !=       |
+| LT         | <        |
+| GT         | >        |
+| LTE        | <=       |
+| GTE        | >=       | 
 
-###function declarations
 
-###function calls
+### Variable declarations
 
-###Constructs
+### function declarations
 
-####If-else
+### function calls
+
+### Constructs
+
+#### If-else
 
 ####While
 
