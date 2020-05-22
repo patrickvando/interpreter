@@ -24,8 +24,10 @@ class Expression_parser:
         if ct.lexeme == "+" or ct.lexeme == "-":
             sign_node = Node()
             sign_node.typ = ct.lexeme
-            left = sign_node
-            left.add_child(self.parse_term())
+            #consume + or -
+            self.lexer.next_token()
+            sign_node.add_child(self.parse_term())
+            return sign_node
         else:
             left = self.parse_term()
         ct = self.lexer.current_token()

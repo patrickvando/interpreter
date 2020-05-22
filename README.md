@@ -24,9 +24,9 @@ The interpreter stage evaluates the parse tree recursively. Arithmetic/boolean o
 
 ## ".simple" Language Specifications
 
-### Supported operators
+### Supported Operators
 
-#### Binary operators
+#### Binary Operators
 
 | Operator   | Symbol   |
 | ---------- | :------: |
@@ -44,16 +44,26 @@ The interpreter stage evaluates the parse tree recursively. Arithmetic/boolean o
 | LTE        | <=       |
 | GTE        | >=       | 
 
+#### Unary Operators
 
-### Variable declarations
+| Operator               | Symbol     |
+| ---------------------- | :--------: |
+| Negate Variable        | -var       |
+| Positive Variable      | +var       |
+| Preincrement Variable  | ++var      |
+| Predecrement Variable  | --var      |
+| Postincrement Variable | var++      |
+| Postdecrement Variable | var--      |
 
-### function declarations
+### Variable Declarations
 
-### function calls
+### Function Declarations
+
+### Function Calls
 
 ### Constructs
 
-#### If-else
+#### If-Else
 
 ####While
 
