@@ -69,18 +69,18 @@ For example,
 
 Functions declarations take the following form:
 
-`type identifier ( type arg1, type arg2, type arg3) {  
-    *body*  
-}`
+`type identifier ( type arg1, type arg2, type arg3) {<br/>
+    *body*
+}
 
 For example:
 
-`int fib(int num) {  
-    if ((num == 1) || (num == 2)){  
-        return 1;  
-    } else {  
-        return fib(num - 1) + fib(num - 2);  
-    }  
+`int fib(int num) {
+    if ((num == 1) || (num == 2)){
+        return 1;
+    } else {
+        return fib(num - 1) + fib(num - 2);
+    }
 }`
 
 ### Function Calls
