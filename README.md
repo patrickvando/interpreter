@@ -4,13 +4,11 @@ Example Usage: `python3 simple_interpreter.py gcd.simple`
 
 ## Overview
 
-I am writing this project for the sake of learning more about the compilers. In its current state, this project is a "simple interpreter" written in Python that interprets the made-up ".simple" language. This is an ongoing project, and I plan to further develop it into a full compiler. 
+I am writing this project for the sake of learning more about compilers. Currently this project is a simple interpreter written in Python that interprets the made-up ".simple" language. This is an ongoing project, and I plan to further develop it into a full compiler. 
 
-Right now, the interpreter supports functions, integer/boolean operations, and if-else/while/for constructs. The included example file `gcd.simple` is a recursive implementation of the Euclidean Algorithm in the ".simple" language that demonstrates these capabilites.
+Right now, the interpreter supports functions, integer/boolean operations, and if-else/while/for constructs. The included example file `gcd.simple` is a recursive implementation of the Euclidean Algorithm in the ".simple" language that demonstrates some of these capabilites.
 
-For further details on what features have (and have not) been implemented in the interpreter, see the *Current State* section. For details on the language specifications of the ".simple" language, see the ".simple" section.
-
-Shoutout to *Writing Compilers and Interpreters: A Software Engineering Approach"* by R. Mak and *Compilers: Principles, Techniques, and Tools* by A. V. Aho, R. Sethi, and J. D. Ullman.
+For further details on what features have (and have not) been implemented in the interpreter, see the *Current State* section. For details on the language specifications of the ".simple" language, see the *".simple" Language Specifications* section.
 
 ## Current State
 
@@ -77,7 +75,8 @@ type identifier ( type arg1, type arg2, type arg3) {<br/>
 
 For example:
 
-```int fib(int num) {
+```
+int fib(int num) {
     if ((num == 1) || (num == 2)){
         return 1;
     } else {
@@ -88,10 +87,95 @@ For example:
 
 ### Function Calls
 
+Function Calls take the following form:
+
+`identifier(arg1, arg2, arg3);`
+
+For example:
+
+`fib(9);`
+
 ### Constructs
 
-#### If-Else
+#### If-Elseif-Else
+
+*if-elseif-else* constructs take the following form:
+
+```
+if (expression) {
+    *body*
+} elseif (expression) {
+    *body*
+} else {
+    *body*
+}
+```
+
+For example,
+
+```
+int x = 1;
+if ( x == 1) {
+    print(1);
+} elseif (x == 2) {
+    print(2);
+} else {
+    print(3);
+}
+```
 
 ####While
 
+*while* constructs take the following form:
+
+```
+while (expression) {
+    *body*
+}
+```
+
+For example,
+```
+int x = 1;
+while (x < 1){
+    x++;
+}
+```
+
 ####For
+
+*for* constructs take the following form:
+
+```
+for (statement; expression; statement) {
+    *body*
+}
+```
+
+For example,
+```
+int total = 0;
+for(int k = 0; k < 10; k++){
+    total += k; 
+}
+```
+
+
+### Built-Ins
+
+The ".simple" interpreter supports a *print* function that can be used for simple output.
+
+The *print* function takes the following form:
+
+```
+print(expression, expression, ...);
+```
+
+For example,
+```
+int a = 1;
+int b = 2;
+int c = 3;
+print(a, b, c);
+```
+print
