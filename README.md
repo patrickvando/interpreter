@@ -89,7 +89,7 @@ int fib(int num) {
 
 Function Calls take the following form:
 
-`identifier(arg1, arg2, arg3);`
+`identifier(arg1, arg2, ...);`
 
 For example:
 
@@ -168,7 +168,7 @@ The ".simple" interpreter supports a *print* function that can be used for simpl
 The *print* function takes the following form:
 
 ```
-print(expression, expression, ...);
+print(arg1, arg2, ...);
 ```
 
 For example,
