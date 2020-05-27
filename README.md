@@ -124,7 +124,7 @@ if ( x == 1) {
 }
 ```
 
-####While
+#### While
 
 *while* constructs take the following form:
 
@@ -142,7 +142,7 @@ while (x < 1){
 }
 ```
 
-####For
+#### For
 
 *for* constructs take the following form:
 
@@ -178,4 +178,3 @@ int b = 2;
 int c = 3;
 print(a, b, c);
 ```
-print
