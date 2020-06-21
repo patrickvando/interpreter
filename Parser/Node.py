@@ -13,3 +13,15 @@ class Node():
         for key in self.attributes:
             copy_node.attributes[key] = self.attributes[key]
         return copy_node
+
+    def __str__(self):
+        self.st = ""
+        def recurse(root, indent):
+            st = "\t"*indent + " " + root.typ
+            if root.attributes:
+                st += " Attributes: {}".format(root.attributes)
+            self.st += st + "\n"
+            for child in root.children:
+                recurse(child, indent + 1)
+        recurse(self, 0)
+        return self.st
