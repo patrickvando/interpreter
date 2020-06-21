@@ -8,7 +8,7 @@ I am writing this project for the sake of learning more about compilers. Current
 
 Right now, the interpreter supports functions, integer/boolean operations, and if-else/while/for constructs. The included example file `gcd.simple` is a recursive implementation of the Euclidean Algorithm in the ".simple" language that demonstrates some of these capabilites.
 
-For further details on what features have (and have not) been implemented in the interpreter, see the *Current State* section. For details on the language specifications of the ".simple" language, see the *".simple" Language Specifications* section.
+For further details on what features have and have not been implemented in the interpreter, see the *Current State* section. For details on the language specifications of the ".simple" language, see the *".simple" Language Specifications* section.
 
 ## Current State
 
