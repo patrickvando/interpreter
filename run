@@ -1,0 +1,5 @@
+#!/bin/bash
+pname="$1"
+nasm -g -f elf64 -l "${pname}.lst"  "${pname}.asm"
+gcc -static -m64 -o "${pname}"  "${pname}.o"
+"./${pname}"
