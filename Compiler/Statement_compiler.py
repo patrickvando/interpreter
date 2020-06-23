@@ -1,24 +1,6 @@
-class Compiler_main:
-    def __init__(self, filename):
-        self.symbol_table = Symbol_table_stack()
-        self.output_file = open(filename, 'w')
-        self.ec = Expression_compiler(self.symbol_table)
-
-    def compile_ast(self, root):
-        res = []
-        res += instr.HEADER
-        res += instr.push(instr.BP)
-        res += instr.mov(instr.BP, instr.SP)
-        res += self.compile_statement_list(root)
-        res += instr.mov(instr.SP, instr.BP)
-        res += instr.pop(instr.BP)
-        res += instr.FOOTER
-        res += instr.define_print()
-        self.write_instructions(res)
-
-    def write_instructions(self, instructions):
-        for instruction in instructions:
-            self.output_file.write(instruction + "\n")
+class Statement_compiler:
+    def __init__(self, symbol_table):
+        pass
 
     def compile_statement_list(self, root):
         res = []
@@ -59,6 +41,3 @@ class Compiler_main:
         res += instr.sub(instr.SP, offset)
         return res
 
-from .Symbol_table import Symbol_table_stack
-from .Instructions import Instructions as instr
-from .Expression_compiler import Expression_compiler

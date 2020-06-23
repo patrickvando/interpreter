@@ -20,6 +20,7 @@ class Symbol_table:
 class Symbol_table_stack:
     def __init__(self):
         self.stack = []
+        self.push_table()
 
     def push_table(self):
         self.stack.append(Symbol_table())
