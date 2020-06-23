@@ -21,9 +21,19 @@ class Symbol_table_stack:
     def __init__(self):
         self.stack = []
         self.push_table()
+        self.label_counter = 0
+
+    def next_label(self):
+        self.label_counter += 1
+        return "__" + str(self.label_counter)
 
     def push_table(self):
-        self.stack.append(Symbol_table())
+        st = Symbol_table()
+        self.stack.append(st)
+
+    def get_next_label(self):
+        table_name = st.get(name)
+        table_
 
     def pop_table(self):
         self.stack.pop()
@@ -32,7 +42,7 @@ class Symbol_table_stack:
         for k in reversed(range(len(self.stack))):
             res = self.stack[k].get(key)
             if res:
-                return res, k
+                return res, len(self.stack) - 1 -  k
         return None
 
     def insert(self, key, value):

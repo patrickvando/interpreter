@@ -1,23 +1,34 @@
 class Statement_compiler:
     def __init__(self, symbol_table):
-        pass
+        self.symbol_table = symbol_table
 
     def compile_statement_list(self, root):
         res = []
         res += self.allocate_variables(root)
+        cc = Construct_compiler(self.symbol_table)
         for statement in root.children:
-            if statement.typ == "VARIABLE_DECLARATION" or statement.typ == "VARIABLE_ASSIGNMENT":
-                res += self.compile_assignment(statement)
-            if statement.typ == "FUNCTION_CALL":
-                res += self.ec.compile_expression(statement)
+            if statement.typ in cc.CONSTRUCTS:
+                res += cc.compile_construct(statement)
+            else:
+                res += self.compile_standalone_statement(statement)
+        return res
+
+    def compile_standalone_statement(self, root):
+        res = []
+        ec = Expression_compiler(self.symbol_table)
+        if root.typ == "VARIABLE_DECLARATION" or root.typ == "ASSIGN":
+            res += self.compile_assignment(root)
+        elif root.typ in ec.STANDALONE_EXPRESSIONS:
+            res += ec.compile_expression(root)
         return res
 
     def compile_assignment(self, root):
         res = []
         variable = root.children[0]
         expression = root.children[1]
-        res += self.ec.load_variable_location(variable)
-        res += self.ec.compile_expression(expression)
+        ec = Expression_compiler(self.symbol_table)
+        res += ec.load_variable_location(variable)
+        res += ec.compile_expression(expression)
         res += instr.pop(instr.R2)
         res += instr.pop(instr.R1)
         res += instr.mov(instr.memloc(instr.R1), instr.R2)
@@ -41,3 +52,6 @@ class Statement_compiler:
         res += instr.sub(instr.SP, offset)
         return res
 
+from .Instructions import Instructions as instr
+from .Expression_compiler import Expression_compiler
+from .Construct_compiler import Construct_compiler

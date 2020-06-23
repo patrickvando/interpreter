@@ -60,6 +60,33 @@ class Instructions:
             return "[" + a + "+" + str(offset) + "]"
         return  "[" + a + "]"
 
+    def addlabel(a):
+        return [str(a) + ":"]
+
+    def je(a):
+        return ["je " + str(a)]
+
+    def jne(a):
+        return ["jne " + str(a)]
+
+    def jg(a):
+        return ["jg " + str(a)]
+
+    def jge(a):
+        return ["jge " + str(a)]
+
+    def jl(a):
+        return ["jl " + str(a)]
+
+    def jle(a):
+        return ["jle  " + str(a)]
+
+    def cmp(a, b):
+        return ["cmp " + str(a) + ", " + str(b)]
+
+    def jmp(a):
+        return ["jmp " + str(a)]
+
     def define_print():
         res = ["""print:
 push rbp
