@@ -52,11 +52,14 @@ class Instructions:
     def mov(a, b):
         return ["mov " + str(a) + ", " + str(b)]
 
+    def ret():
+        return ["ret"]
+
     def memloc(a, offset=None):
         a = str(a)
         if offset:
             if offset < 0:
-                return "[" + a + str(offset) + "]"
+                return "[" + a + "-" + str(offset) + "]"
             return "[" + a + "+" + str(offset) + "]"
         return  "[" + a + "]"
 
@@ -86,20 +89,3 @@ class Instructions:
 
     def jmp(a):
         return ["jmp " + str(a)]
-
-    def define_print():
-        res = ["""print:
-push rbp
-mov rbp, rsp
-push rax
-push rcx
-mov rdi,fmt
-mov rsi, [rbp + 16]
-xor rax, rax
-call printf
-pop rcx
-pop rax
-pop rbp
-ret"""]
-        return res
-    

@@ -44,7 +44,8 @@ class Expression_compiler:
         elif root.typ == "FUNCTION_CALL":
             res += self.compile_function_call(root)
         elif root.typ == "VARIABLE":
-            res += self.load_variable_location(root)
+            variable = root.copy_attributes()
+            res += self.load_variable_location(variable)
             res += instr.pop(instr.R2)
             res += instr.mov(instr.R1, instr.memloc(instr.R2))
             res += instr.push(instr.R1)
@@ -71,11 +72,11 @@ class Expression_compiler:
         res += self.load_variable_location(variable)
         res += instr.pop(instr.R1)
         res += instr.mov(instr.R2, instr.memloc(instr.R1))
-        if root.attributes["pre"]:
+        if not root.attributes["pre"]:
             res += instr.push(instr.R2)
         res += op(instr.R2, 1)
         res += instr.mov(instr.memloc(instr.R1), instr.R2)
-        if not root.attributes["pre"]:
+        if root.attributes["pre"]:
             res += instr.push(instr.R2)
         return res
 
@@ -165,11 +166,11 @@ class Expression_compiler:
     def compile_function_call(self, root):
         res = []
         res += instr.xor(instr.R1, instr.R1)
-        function_name = root.attributes["identifier"]
+        function, depth = self.symbol_table.get(root.attributes["identifier"])
         arguments = root.children[0]
-        for arg in arguments.children:
+        for arg in reversed(arguments.children):
             res += self.compile_expression(arg)
-        res += instr.call(function_name)
+        res += instr.call(function["label"])
         for arg in arguments.children:
             res += instr.pop(instr.R2)
         #store result of function
@@ -179,12 +180,12 @@ class Expression_compiler:
     #pushes the memory location of the variable onto the stack
     def load_variable_location(self, variable):
         res = []
-        variable, depth = self.symbol_table.get(variable.attributes["identifier"])
+        variable, depth = self.symbol_table.get(variable["identifier"])
         #assume depth 0 right now
         res += instr.mov(instr.R1, instr.BP)
         for k in range(depth):
             res += instr.mov(instr.R1, instr.memloc(instr.R1))
-        res += instr.sub(instr.R1, variable["offset"])
+        res += instr.add(instr.R1, variable["offset"])
         res += instr.push(instr.R1)
         return res
 

@@ -20,11 +20,15 @@ class Statement_compiler:
             res += self.compile_assignment(root)
         elif root.typ in ec.STANDALONE_EXPRESSIONS:
             res += ec.compile_expression(root)
+        elif root.typ == "FUNCTION":
+            res += self.compile_function_definition(root)
+        elif root.typ == "RETURN":
+            res += self.compile_function_return(root)
         return res
 
     def compile_assignment(self, root):
         res = []
-        variable = root.children[0]
+        variable = root.children[0].copy_attributes()
         expression = root.children[1]
         ec = Expression_compiler(self.symbol_table)
         res += ec.load_variable_location(variable)
@@ -41,15 +45,57 @@ class Statement_compiler:
         variables = []
         for statement in root.children:
             if statement.typ == "VARIABLE_DECLARATION":
-                info = {}
-                variable = statement.children[0]
-                variables.append(variable.attributes)
+                variable = statement.children[0].copy_attributes()
+                variables.append(variable)
         for variable in variables:
-            offset += 8
+            offset -= 8
             variable["offset"] = offset
             self.symbol_table.insert(variable["identifier"], variable)
         #allocate space for variables
-        res += instr.sub(instr.SP, offset)
+        res += instr.add(instr.SP, offset)
+        return res
+
+    def compile_function_definition(self, root):
+        res = []
+        function = {}
+        function["label"] = self.symbol_table.next_label()
+        self.symbol_table.insert(root.attributes["identifier"], function)
+        self.symbol_table.push_table()
+        arguments = root.children[0]
+        body = root.children[1]
+        ec = Expression_compiler(self.symbol_table)
+        sc = Statement_compiler(self.symbol_table)
+        continue_label = self.symbol_table.next_label()
+        res += instr.jmp(continue_label)
+        res += instr.addlabel(function["label"])
+        res += instr.push(instr.BP)
+        res += instr.mov(instr.BP, instr.SP)
+        offset = 0
+        #load the arguments
+        for argument in arguments.children:
+            variable = argument.copy_attributes()
+            offset += 8
+            variable["offset"] = 8 + offset
+            self.symbol_table.insert(variable["identifier"], variable)
+        res += sc.compile_statement_list(body)
+        res += instr.mov(instr.SP, instr.BP)
+        res += instr.pop(instr.BP)
+        #default return value of 0
+        res += instr.mov(instr.R1, 0)
+        res += instr.ret()
+        res += instr.addlabel(continue_label)
+        self.symbol_table.pop_table()
+        return res
+
+    def compile_function_return(self, root):
+        res = []
+        return_value = root.children[0]
+        ec = Expression_compiler(self.symbol_table)
+        res += ec.compile_expression(return_value)
+        res += instr.pop(instr.R1)
+        res += instr.mov(instr.SP, instr.BP)
+        res += instr.pop(instr.BP)
+        res += instr.ret()
         return res
 
 from .Instructions import Instructions as instr
