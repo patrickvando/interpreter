@@ -6,29 +6,24 @@ class Expression_parser:
         self.lexer = lexer
         self.util = Utilities(lexer)
 
-    def parse_expression(self):
-        left_node = self.parse_simple_expression()
+    def parse_expression(self, left=None):
+        ct = self.lexer.current_token()
+        if not left:
+            left = self.parse_simple_expression()
         ct = self.lexer.current_token()
         if ct.lexeme in Data_types.relational_ops:
             rel_node = Node()
             rel_node.typ = ct.lexeme
-            rel_node.add_child(left_node)
+            rel_node.add_child(left)
             self.lexer.next_token()
             rel_node.add_child(self.parse_simple_expression())
-            return rel_node
+            return self.parse_expression(rel_node)
         else:
-            return left_node
+            return left
 
-    def parse_simple_expression(self):
+    def parse_simple_expression(self, left=None):
         ct = self.lexer.current_token()
-        if ct.lexeme == "+" or ct.lexeme == "-":
-            sign_node = Node()
-            sign_node.typ = ct.lexeme
-            #consume + or -
-            self.lexer.next_token()
-            sign_node.add_child(self.parse_term())
-            return sign_node
-        else:
+        if not left:
             left = self.parse_term()
         ct = self.lexer.current_token()
         if ct.lexeme in Data_types.simple_ops:
@@ -36,27 +31,34 @@ class Expression_parser:
             op_node.typ = ct.lexeme
             op_node.add_child(left)
             self.lexer.next_token()
-            op_node.add_child(self.parse_simple_expression())
-            return op_node
+            op_node.add_child(self.parse_term())
+            return self.parse_simple_expression(op_node)
         else:
             return left 
 
-    #HERE -> WRITE OUT PARSE TERM
-    def parse_term(self):
-        left = self.parse_factor() 
+    def parse_term(self, left=None):
+        if not left:
+            left = self.parse_factor() 
         ct = self.lexer.current_token()
         if ct.lexeme in Data_types.term_ops:
             op_node = Node()
             op_node.typ = ct.lexeme
-            self.lexer.next_token()
             op_node.add_child(left)
-            op_node.add_child(self.parse_term())
-            return op_node
+            self.lexer.next_token()
+            op_node.add_child(self.parse_factor())
+            return self.parse_term(op_node)
         else:
             return left
 
     def parse_factor(self):
         ct = self.lexer.current_token()
+        if ct.lexeme == "+" or ct.lexeme == "-":
+            sign_node = Node()
+            sign_node.typ = ct.lexeme
+            #consume + or -
+            self.lexer.next_token()
+            sign_node.add_child(self.parse_factor())
+            return sign_node
         if ct.typ == "double":
             res_node = Node()
             res_node.typ = "CONSTANT"

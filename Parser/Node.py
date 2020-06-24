@@ -10,9 +10,14 @@ class Node():
     def copy(self):
         copy_node = Node()
         copy_node.typ = self.typ
-        for key in self.attributes:
-            copy_node.attributes[key] = self.attributes[key]
+        copy_node.attributes = self.copy_attributes()
         return copy_node
+
+    def copy_attributes(self):
+        copy_attributes = {}
+        for key in self.attributes:
+            copy_attributes[key] = self.attributes[key]
+        return copy_attributes
 
     def __str__(self):
         self.st = ""
