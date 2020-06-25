@@ -1,6 +1,27 @@
-# Simple Interpreter
+# NRJ Compiler
+
+## About
+
+This is a compiler for the NRJ language (made up language). NRJ supports recursive functions, for/while/if-elseif constructs, and integer arithmetic. NRJ file goes into the compiler, 64-bit assembly code comes out. 
+
+See the file "gcd.nrj" for an example implementation of the Euclidean Algorithm.
 
 Example Usage: `python3 simple_interpreter.py gcd.simple`
+
+## Table of Contents
+
+## Dependencies
+
+need nasm
+
+## Why?
+
+## Implemented Features
+
+## Planned Features
+
+
+## NRJ Language Specification
 
 ## Overview
 
