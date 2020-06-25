@@ -2,15 +2,17 @@
 
 ## About
 
-This is a compiler for the NRJ language (made up language). NRJ supports recursive functions, for/while/if-elseif constructs, and integer arithmetic. Well-formed NRJ file goes into the compiler, 64-bit assembly code comes out. 
+This is a compiler for the NRJ language (a made-up language). NRJ supports recursive functions, for/while/if-elseif constructs, and integer arithmetic. Well-formed NRJ file goes into the compiler, 64-bit assembly code comes out. 
+
+To compile `filename.nrj` into `filename.asm`, use:  `python nrj_compiler.py filename.nrj`
+
+To run `filename.asm`, use:  `run filename`
 
 See the file "gcd.nrj" for an example implementation of the Euclidean Algorithm.
 
 See the file "fib.nrj" for an example implementation of a Fibonnaci number generator.
 
 See the file "isPrime.nrj" for an example implementation of a prime number checker. 
-
-Example Usage: `python3 simple_interpreter.py gcd.simple`
 
 ### Table of Contents
 
