@@ -14,13 +14,13 @@ Example Usage: `python3 simple_interpreter.py gcd.simple`
 
 ### Table of Contents
 
-[1. Dependencies](#Dependencies)
+[Dependencies](#Dependencies)
 
-[3. About](#2.-About)
+[About](#About)
 
-[2. Features](#3.-Features)
+[Features](#Features)
 
-[3. NRJ Language Specifications](#4.-NRJ-Language-Specifications)
+[NRJ Language Specifications](#NRJ-Language-Specifications)
 
 
 
@@ -29,15 +29,15 @@ Example Usage: `python3 simple_interpreter.py gcd.simple`
 
 need nasm
 
-## 2. About
+## About
 
 placeholder
 
-## 3. Features
+## Features
 
 placeholder
 
-## 3. NRJ Language Specifications
+## NRJ Language Specifications
 
 placeholder
 
