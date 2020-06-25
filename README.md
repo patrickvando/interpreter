@@ -12,18 +12,31 @@ See the file "isPrime.nrj" for an example implementation of a prime number check
 
 Example Usage: `python3 simple_interpreter.py gcd.simple`
 
-## Table of Contents
+### Table of Contents
 
-[1. Dependencies](#Dependencies)
+[1. Dependencies](#1.-Dependencies)
+[3. About](#2.-About)
+[2. Features](#3.-Features)
+[3. NRJ Language Specifications](#4.-NRJ-Language-Specifications)
 
 
 
 
-
-
-## Dependencies
+## 1. Dependencies
 
 need nasm
+
+## 2. About
+
+placeholder
+
+## 3. Features
+
+placeholder
+
+## 3. NRJ Language Specifications
+
+placeholder
 
 ## Why?
 
