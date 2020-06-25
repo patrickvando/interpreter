@@ -15,8 +15,11 @@ Example Usage: `python3 simple_interpreter.py gcd.simple`
 ### Table of Contents
 
 [1. Dependencies](#1.-Dependencies)
+
 [3. About](#2.-About)
+
 [2. Features](#3.-Features)
+
 [3. NRJ Language Specifications](#4.-NRJ-Language-Specifications)
 
 
