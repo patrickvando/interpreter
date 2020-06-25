@@ -68,7 +68,7 @@ class Expression_compiler:
 
     def compile_inc_dec(self, root, op):
         res = []
-        variable = root.children[0]
+        variable = root.children[0].copy_attributes()
         res += self.load_variable_location(variable)
         res += instr.pop(instr.R1)
         res += instr.mov(instr.R2, instr.memloc(instr.R1))

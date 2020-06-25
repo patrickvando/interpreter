@@ -41,16 +41,17 @@ class Statement_compiler:
     def allocate_variables(self, root):
         res = []
         st = ""
-        offset = 0
-        variables = []
-        for statement in root.children:
-            if statement.typ == "VARIABLE_DECLARATION":
-                variable = statement.children[0].copy_attributes()
-                variables.append(variable)
-        for variable in variables:
-            offset -= 8
-            variable["offset"] = offset
-            self.symbol_table.insert(variable["identifier"], variable)
+        def recurse(root, offset):
+            if root.typ == "VARIABLE_DECLARATION":
+                variable = root.children[0].copy_attributes()
+                offset -= 8
+                variable["offset"] = offset
+                self.symbol_table.insert(variable["identifier"], variable)
+            else:
+                for child in root.children:
+                    offset = recurse(child, offset)
+            return offset
+        offset = recurse(root, 0)
         #allocate space for variables
         res += instr.add(instr.SP, offset)
         return res
