@@ -14,7 +14,7 @@ Example Usage: `python3 simple_interpreter.py gcd.simple`
 
 ### Table of Contents
 
-[1. Dependencies](#1.-Dependencies)
+[1. Dependencies](#1.Dependencies)
 
 [3. About](#2.-About)
 
@@ -25,7 +25,7 @@ Example Usage: `python3 simple_interpreter.py gcd.simple`
 
 
 
-## 1. Dependencies
+## 1.Dependencies
 
 need nasm
 
