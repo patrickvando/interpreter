@@ -1,0 +1,10 @@
+int isPrime(int x){
+    for(int k = 2; k * k <= x; k++){
+        if (x % k == 0){
+            return 0;
+        }
+    }
+    return 1;
+}
+int x = 51;
+print(isPrime(x));
