@@ -14,6 +14,10 @@ See the file `fib.nrj` for an example implementation of a Fibonnaci number gener
 
 See the file `isprime.nrj` for an example implementation of a prime number checker. 
 
+## Background
+
+This was a learning project for me. I learned a lot about compilers and assembly. I also learned about managing complexity in a larger personal project. Compilers are fascinating and I have still have much to learn. I plan to continue on expanding the features available in this compiler.
+
 ## Dependencies
 
 - Python
@@ -21,10 +25,6 @@ See the file `isprime.nrj` for an example implementation of a prime number check
 - GCC
 
 The compiler is written in Python. NASM is used to compile the `.asm` file output by the compiler into a `.o` file, GCC is used to turn the `.o` file into an executable. 
-
-## Background
-
-This was a learning project for me. I learned a lot about compilers and assembly. I also learned about managing complexity in a larger personal project. Compilers are fascinating and I have still have much to learn. 
 
 ## How it Works
 
@@ -35,6 +35,15 @@ This compiler has three stages:
 - Compiler stage travels through the AST and turns it into NASM instructions that are written to the `.asm` file
 
 ## Features
+
+| Implemented Features |
+| -------------------- |
+| Integer arithmetic |
+| If-elseif-else branching |
+| While loops |
+| For loops |
+| Functions |
+| Recursion |
 
 ## NRJ Language Specifications
 
