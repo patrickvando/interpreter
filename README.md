@@ -2,7 +2,7 @@
 
 ## About
 
-This is a compiler for the NRJ language (a made-up language). NRJ supports recursive functions, for/while/if-elseif constructs, and integer arithmetic. Well-formed NRJ file goes into the compiler, 64-bit assembly code comes out. 
+This is a compiler for the [NRJ language (a made-up language)](#NRJ-Language-Specifications). NRJ supports recursive functions, for/while/if-elseif constructs, and integer arithmetic. Well-formed NRJ file goes into the compiler, 64-bit assembly code comes out. 
 
 To compile `filename.nrj` into `filename.asm`, use:  `python nrj_compiler.py filename.nrj`
 
@@ -14,17 +14,6 @@ See the file `fib.nrj` for an example implementation of a Fibonnaci number gener
 
 See the file `isprime.nrj` for an example implementation of a prime number checker. 
 
-### Table of Contents
-
-[Dependencies](#Dependencies)
-
-[About](#About)
-
-[Features](#Features)
-
-[NRJ Language Specifications](#NRJ-Language-Specifications)
-
-
 ## Dependencies
 
 - Python
@@ -33,7 +22,7 @@ See the file `isprime.nrj` for an example implementation of a prime number check
 
 The compiler is written in Python. NASM is used to compile the `.asm` file output by the compiler into a `.o` file, GCC is used to turn the `.o` file into an executable. 
 
-## About
+## Background
 
 This was a learning project for me. I learned a lot about compilers and assembly. I also learned about managing complexity in a project that is larger/more complex than I was used to as a student. Compilers are fascinating and I have still have much to learn. 
 
