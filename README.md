@@ -58,7 +58,7 @@ This compiler has three stages:
 | Multiply   | *        |
 | Divide     | /        |
 | Modulus    | %        |
-| Or         | ||       |
+| Or         | \|\|       |
 | And        | &&       |
 | EQ         | ==       |
 | NE         | !=       |
