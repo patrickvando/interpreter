@@ -24,7 +24,9 @@ The compiler is written in Python. NASM is used to compile the `.asm` file outpu
 
 ## Background
 
-This was a learning project for me. I learned a lot about compilers and assembly. I also learned about managing complexity in a project that is larger/more complex than I was used to as a student. Compilers are fascinating and I have still have much to learn. 
+This was a learning project for me. I learned a lot about compilers and assembly. I also learned about managing complexity in a larger personal project. Compilers are fascinating and I have still have much to learn. 
+
+## How it Works
 
 This compiler has three stages:
 
@@ -34,40 +36,7 @@ This compiler has three stages:
 
 ## Features
 
-placeholder
-
 ## NRJ Language Specifications
-
-placeholder
-
-## Why?
-
-## Implemented Features
-
-## Planned Features
-
-
-## NRJ Language Specification
-
-## Overview
-
-I am writing this project for the sake of learning more about compilers. Currently this project is a simple interpreter written in Python that interprets the made-up ".simple" language. This is an ongoing project, and I plan to further develop it into a full compiler. 
-
-Right now, the interpreter supports functions, integer/boolean operations, and if-else/while/for constructs. The included example file `gcd.simple` is a recursive implementation of the Euclidean Algorithm in the ".simple" language that demonstrates some of these capabilites.
-
-For further details on what features have and have not been implemented in the interpreter, see the *Current State* section. For details on the language specifications of the ".simple" language, see the *".simple" Language Specifications* section.
-
-## Current State
-
-Right now, the interpreter consists of a three stage process (each with a corresponding directory in the project): the lexical analysis stage (Lexer), the semantic analysis stage (Parser) and the interpreter stage (Interpreter). 
-
-The lexical analysis stage breaks the source text file into "symbol", "number", or "word" tokens. Further division of the "word" tokens into keywords (like "int") and identifiers ("myvar") is left to the semantic analysis stage. String support has yet to be implemented.
-
-The semantic analysis stage uses a top-down recursive-descent parser to fit the various tokens into the ".simple" language grammar. The various tokens are assembled into "statements" (variable declarations, function declarations, etc), "expressions" (+, ||, function calls, etc) or "constructs" (if-else, while, for). These statements, expressions, and constructs are then represented in an intermediate parse tree. Type checking and error recovery (both very important parts of a compiler/interpreter) have yet to be implemented. 
-
-The interpreter stage evaluates the parse tree recursively. Arithmetic/boolean operations are represented in the parse tree with a node for the operand and the children as operators, so evaluating them is straightforward. Evaluating variable and function declarations involves evaluating an expression and attaching the result to an identifier that is then added to the the "symbol table" at the top of the "stack". Calling a function involves pushing a new "symbol table" onto the stack, which is popped when the function has ended or a return statement has executed. Constructs like "for" involve executing statements and evaluating an expression to determine whether or not the statements in the "body" of the construct should be executed. 
-
-## ".simple" Language Specifications
 
 ### Supported Operators
 
