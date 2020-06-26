@@ -8,23 +8,35 @@ To compile `filename.nrj` into `filename.asm`, use:  `python nrj_compiler.py fil
 
 To run `filename.asm`, use:  `run filename`
 
-See the file "gcd.nrj" for an example implementation of the Euclidean Algorithm.
+See the file `gcd.nrj` for an example implementation of the Euclidean Algorithm.
 
-See the file "fib.nrj" for an example implementation of a Fibonnaci number generator.
+See the file `fib.nrj` for an example implementation of a Fibonnaci number generator.
 
-See the file "isPrime.nrj" for an example implementation of a prime number checker. 
+See the file `isprime.nrj` for an example implementation of a prime number checker. 
 
 ### Table of Contents
 
 [Dependencies](#Dependencies)
 
+- Python
+- NASM 
+- GCC
+
+The compiler is written in Python. NASM is used to compile the `.asm` file output by the compiler into a `.o` file, GCC is used to turn the `.o` file into an executable. 
+
 [About](#About)
+
+This was a learning project for me. I learned a lot about compilers and assembly. I also learned about managing complexity in a project that is larger/more complex than I was used to as a student. Compilers are fascinating and I have still have much to learn. 
+
+This compiler has three stages:
+
+- Lexer stage turns source `.nrj` file into a sequence of tokens (tokens for symbols, tokens for numbers, token for 'words')
+- Parser stage turns sequence of tokens into an Abstract Syntax Tree (intermediate representation of source code)
+- Compiler stage travels through the AST and turns it into NASM instructions that are written to the `.asm` file
 
 [Features](#Features)
 
 [NRJ Language Specifications](#NRJ-Language-Specifications)
-
-
 
 
 ## Dependencies
