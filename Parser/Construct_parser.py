@@ -46,7 +46,6 @@ class Construct_parser:
         while_node.add_child(stat_parser.parse_body())
         return while_node
 
-    #need to add branch off if -> sub node -> one option for each "elif"
     def parse_if(self):
         self.util.match("if") 
         self.util.match("(")
