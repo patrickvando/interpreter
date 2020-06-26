@@ -181,7 +181,7 @@ For example,
 ```
 int total = 0;
 for(int k = 0; k < 10; k++){
-    total += k; 
+    total = total + k; 
 }
 ```
 
