@@ -6,7 +6,7 @@ This is a compiler for the [NRJ language (a made-up language)](#NRJ-Language-Spe
 
 To compile `filename.nrj` into `filename.asm`, use:  `python nrj_compiler.py filename.nrj`
 
-To run `filename.asm`, use:  `run filename`
+To run `filename.asm`, use:  `. run filename`
 
 See the file `gcd.nrj` for an example implementation of the Euclidean Algorithm.
 
