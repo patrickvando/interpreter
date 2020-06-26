@@ -1,0 +1,3 @@
+#!/bin/bash
+pname="$1"
+nasm -g -f elf64 -l "${pname}.lst"  "${pname}.asm"
