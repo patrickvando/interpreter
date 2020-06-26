@@ -78,7 +78,7 @@ class Expression_parser:
             if nt.lexeme == "(":
                 self.lexer.prev_token()
                 return self.parse_function_call()
-            elif nt.lexeme == "++" or ct.lexeme == "--":
+            elif nt.lexeme == "++" or nt.lexeme == "--":
                 self.lexer.prev_token()
                 return self.parse_postincrement_postdecrement()
             elif ct.lexeme == "true":
