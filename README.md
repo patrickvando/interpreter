@@ -32,7 +32,7 @@ This compiler has three stages:
 
 - Lexer stage turns source `.nrj` file into a sequence of tokens (tokens for symbols, tokens for numbers, token for 'words')
 - Parser stage turns sequence of tokens into an Abstract Syntax Tree (intermediate representation of source code)
-- Compiler stage travels through the AST and turns it into NASM instructions that are written to the `.asm` file
+- Compiler stage travels through the AST and turns it into NASM instructions that are written to a `.asm` file
 
 ## Features
 
