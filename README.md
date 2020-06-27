@@ -16,7 +16,9 @@ See the file `isprime.nrj` for an example implementation of a prime number check
 
 ## Background
 
-This was a learning project for me. I learned a lot about compilers and assembly. I also learned about managing complexity in a larger personal project. Compilers are fascinating and I have still have much to learn. I plan to continue on expanding the features available in this compiler.
+This was a learning project for me. My goal was to make a compiler capable of turning a traditionally structured high level language into low level assembly. I learned a lot about compilers and assembly in the process of making this project, but it remains very bare-bones in terms of functionality. Recursive functions, loops, and integer operations are enough to make a number of fun programs (see the included examples) - but of course any complete compiler would also include support for strings, doubles, arrays, classes (and more).  
+
+There are also still many areas of compiler design that I am continuing to learn about; error recovery, type-checking, and instruction/register optimization are all interesting and important areas of compiler design that this project does not address in its current implementation. I hope to continue learning about compilers and expanding this project!
 
 ## Dependencies
 
@@ -188,18 +190,16 @@ for(int k = 0; k < 10; k++){
 
 ### Built-Ins
 
-The ".simple" interpreter supports a *print* function that can be used for simple output.
+This NRJ compiler supports a *print* function that can be used for simple output.
 
 The *print* function takes the following form:
 
 ```
-print(arg1, arg2, ...);
+print(arg1);
 ```
 
 For example,
 ```
 int a = 1;
-int b = 2;
-int c = 3;
-print(a, b, c);
+print(a);
 ```
