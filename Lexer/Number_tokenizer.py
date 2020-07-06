@@ -1,9 +1,12 @@
 from .Token import Token
 class Number_tokenizer:
+    """The Number_tokenizer class processes integer and floating point numbers into tokens."""
+
     def __init__(self, buf):
         self.buf = buf
 
     def extract(self):
+        """Return an integer or floating point token."""
         res = Token()
         def getDigits():
             c = self.buf.go_forward()

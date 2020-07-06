@@ -1,5 +1,6 @@
 from .Token import Token
 class Symbol_tokenizer:
+    """The Symbol_tokenizer class processes symbols into tokens."""
     # + - { } != || && == <= => ++ -- / *
     acceptable_symbols = set("+-{}!|&=<>/*[]();,%")
     acceptable_operators = set(["+", "-", "{", "}", "!", "||", "&&", "==", "<=", ">=", "++", "--", "/", "*", "!=", "[", "]", "(", ")", ";", "=", ',', '<', '>', '%'])
@@ -7,6 +8,7 @@ class Symbol_tokenizer:
         self.buf = buf
 
     def extract(self):
+        """Return a symbol token."""
         val = ""
         a = self.buf.go_forward()
         b = self.buf.go_forward()
