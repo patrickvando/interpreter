@@ -30,7 +30,6 @@ class Buffer:
             return self.text[self.current]
 
     def consume(self):
-        """Remove all previous characters up to and including
-        the current character from the stream."""
+        """Remove all previous characters up to and including the current character from the stream."""
         self.text = self.text[self.current + 1:]
         self.current = -1

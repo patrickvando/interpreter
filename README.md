@@ -8,11 +8,11 @@ To compile `filename.nrj` into `filename.asm`, use:  `python nrj_compiler.py fil
 
 To run `filename.asm`, use:  `. run filename`
 
-See the file `gcd.nrj` for an example implementation of the Euclidean Algorithm.
+See the file `gcd.nrj` for an example implementation of the Euclidean Algorithm in NRJ.
 
-See the file `fib.nrj` for an example implementation of a Fibonnaci number generator.
+See the file `fib.nrj` for an example implementation of a Fibonnaci number generator in NRJ.
 
-See the file `isprime.nrj` for an example implementation of a prime number checker. 
+See the file `isprime.nrj` for an example implementation of a prime number checker in NRJ.
 
 ## Background
 

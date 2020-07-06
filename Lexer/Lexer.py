@@ -56,9 +56,7 @@ class Lexer:
         return token
 
     def consume(self):
-        """Remove all previous tokens up to and including the current
-        token from the stream.
-        """
+        """Remove all previous tokens up to and including the current token from the stream."""
         self.token_buffer = self.token_buffer[self.current + 1:]
         self.current = -1
 
