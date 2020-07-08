@@ -9,7 +9,7 @@ def main(filename):
     """Call the lexer, parser, and compiler."""
     lex  = Lexer(filename)
     stat_parser = Statement_parser(lex)
-    stat_list = stat_parser.parse_statement_list()
+    stat_list = stat_parser.parse_to_end()
     head, tail = os.path.splitext(filename)
     compiler = Compiler_main(head + ".asm")
     compiler.compile_ast(stat_list)

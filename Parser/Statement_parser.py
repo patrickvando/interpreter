@@ -3,12 +3,19 @@ from .Data_types import Data_types
 from .Utilities import Utilities
 from .Expression_parser import Expression_parser
 class Statement_parser:
+    """The Statement_parser class is part of a recursive descent parser that builds an Abstract Syntax Tree (AST) from a stream of lexical tokens supplied by the Lexer class.
+
+    The Statement_parser class is responsible for parsing sequences of tokens that
+    represent the beginnings of statements or lists of statements. Variable 
+    assignments, function definitions, function calls, increment/decrement and 
+    return statements are all considered to be statements."""
+
     def __init__(self, lexer):
         self.lexer = lexer
         self.util = Utilities(lexer)
-   
-    #parse tokens from the beginning of the file to the end
-    def parse_statement_list(self):
+  
+    def parse_to_end(self):
+        """Return a statement list node containing all top level statements."""
         current_token = self.lexer.next_token()
         listat_node = Node()
         listat_node.typ = "STATEMENT_LIST"
@@ -17,8 +24,8 @@ class Statement_parser:
             current_token = self.lexer.current_token()
         return listat_node        
 
-    #parse tokens within a construct or function
     def parse_body(self):
+        """Return a statement list node containing all top level statements within a function definition or a while/if/for construct."""
         self.util.match("{")
         ct = self.lexer.current_token()
         listat_node = Node()
@@ -29,81 +36,68 @@ class Statement_parser:
         self.util.match("}")
         return listat_node
  
-    #parse all statements allowed in the body of a function
-    #return statements, function declarations, function calls, increment/decrement, variable declarations, variable assignments, if/while/for constructs
     def parse_body_statement(self):
+        """Return a node representing any statement that can occur at the top level of a construct or function definition, or at the top level of the source file."""
         ct = self.lexer.current_token()
-        #parse return statement
         if ct.lexeme == "return":
             res_node = self.parse_return_statement()
             self.util.match(";")
             return res_node
-        #parse if/while/for constructs
         elif ct.lexeme in Data_types.constructs:
             con_parser = Construct_parser(self.lexer)
             res_node = con_parser.parse_construct()
             res_node.attributes["CONSTRUCT"] = True
             return res_node
-        #parse function declarations
         elif ct.lexeme in Data_types.types:
-            #match data type
-            ct = self.lexer.next_token()
-            #match identifier
-            ct = self.lexer.next_token()
-            self.lexer.prev_token()
-            self.lexer.prev_token()
+            ct = self.lexer.next_token() #match data type
+            ct = self.lexer.next_token() #match identifier
+            self.lexer.prev_token() #backtrack
+            self.lexer.prev_token() #backtrack
             if ct.lexeme == "(":
                 res_node = self.parse_function_declaration()
                 return res_node
-        #parse remaining statement options
-        res_node = self.parse_statement()
+        res_node = self.parse_statement() #parse remaining statement options
         self.util.match(";")
         return res_node
 
-    #parse function calls, increment/decrement, variable declarations, variable assignments
     def parse_statement(self):
+        """Return a node representing a statement that is not a function declaration, construct, or return statement."""
         ct = self.lexer.current_token()
-        #parse variable declaration
+        # parse variable declaration
         if ct.lexeme in Data_types.types:
-            #match data type
-            ct = self.lexer.next_token()
-            #match identifier
-            ct = self.lexer.next_token()
-            self.lexer.prev_token()
-            self.lexer.prev_token()
+            ct = self.lexer.next_token() # match data type
+            ct = self.lexer.next_token() # match identifier
+            self.lexer.prev_token() # backtrack
+            self.lexer.prev_token() # backtrack
             if ct.lexeme == "=":
                 res_node = self.parse_variable_declaration()
-                #self.util.match(";")
                 return res_node
-        #parse preincrement/predecrement
+        # parse increment / decrement
         elif ct.lexeme == "++" or ct.lexeme == "--":
             exp_parser = Expression_parser(self.lexer)
             res_node = exp_parser.parse_preincrement_predecrement()
-            #self.util.match(";")
             return res_node
-        else:
-            #parse function calls
+        else: 
+            # parse function calls
             ct = self.lexer.next_token()
             self.lexer.prev_token()
             if ct.lexeme == "(":
                 exp_parser = Expression_parser(self.lexer)
                 res_node = exp_parser.parse_function_call()
-                #self.util.match(";")
                 return res_node
             #parse variable assignment
             elif ct.lexeme == "=":
                 res_node = self.parse_variable_assignment()
-                #self.util.match(";")
                 return res_node
             #parse postincrement/postdecrement
             elif ct.lexeme == "++" or ct.lexeme == "--":
                 exp_parser = Expression_parser(self.lexer)
                 res_node = exp_parser.parse_postincrement_postdecrement()
-                #self.util.match(";")
                 return res_node
         return None
     
     def parse_return_statement(self):
+        """Return a statement node representing a return statement."""
         return_node = Node()
         return_node.typ = "RETURN"
         self.util.match("return")
@@ -112,6 +106,7 @@ class Statement_parser:
         return return_node 
     
     def parse_variable_declaration(self):
+        """Return a statement node representing a variable declaration."""
         stat_node = Node()
         ct = self.lexer.current_token()
         stat_node.attributes["type"] = ct.lexeme
@@ -131,14 +126,13 @@ class Statement_parser:
 
     
     def parse_function_declaration(self):
+        """Return a statement node representing a function definition."""
         stat_node = Node()
         ct = self.lexer.current_token()
         stat_node.attributes["return_type"] = ct.lexeme
-        #consume type
-        ct = self.lexer.next_token()
+        ct = self.lexer.next_token() # consume type
         stat_node.attributes["identifier"] = ct.lexeme
-        #consume identifier
-        ct = self.lexer.next_token()
+        ct = self.lexer.next_token() # consume identifier
         stat_node.typ = "FUNCTION"
         self.util.match("(")
         ct = self.lexer.current_token()
@@ -159,12 +153,12 @@ class Statement_parser:
         return stat_node
 
     def parse_variable_assignment(self):
+        """Return a statement node representing a variable assignment."""
         ct = self.lexer.current_token()
         stat_node = Node()
         stat_node.attributes["identifier"] = ct.lexeme
         stat_node.typ = "VARIABLE"
-        #consume identifier
-        self.lexer.next_token()
+        self.lexer.next_token() # consume identifier
         assign_node = Node()
         assign_node.typ = "ASSIGN"
         assign_node.add_child(stat_node)
