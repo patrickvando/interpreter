@@ -2,11 +2,23 @@ from .Data_types import Data_types
 from .Node import Node
 from .Utilities import Utilities
 class Expression_parser:
+    """The Expression_parser class is part of a recursive descent parser that builds an Abstract Syntax Tree (AST) from a stream of lexical tokens supplied by the Lexer class.
+
+    The Expression_parser class is responsible for parsing sequences of tokens
+    that represent "expressions", which evaluate to some result.
+    Examples of expressions include arithmetic expressions, like (1*2)+(3/4),
+    and function calls that return a number."""
+
     def __init__(self, lexer):
         self.lexer = lexer
         self.util = Utilities(lexer)
 
     def parse_expression(self, left=None):
+        """Return an expression node.
+
+        Relational operators (<,>,=,...) are considered to have the lowest 
+        precedence, so they are parsed here, after the parser has recursively
+        processed all operators of higher precedence."""
         ct = self.lexer.current_token()
         if not left:
             left = self.parse_simple_expression()
@@ -22,6 +34,12 @@ class Expression_parser:
             return left
 
     def parse_simple_expression(self, left=None):
+        """Return a "simple expression" node.
+
+        Simple operators (+,-) are considered to have the next lowest 
+        precedence, so they are parsed here, after the parser has recursively
+        processed all operators of higher precedence."""
+        Simple operators 
         ct = self.lexer.current_token()
         if not left:
             left = self.parse_term()
@@ -37,6 +55,11 @@ class Expression_parser:
             return left 
 
     def parse_term(self, left=None):
+        """Return a "term" node.
+
+        Term operators (*,/) are considered to have the next lowest 
+        precedence, so they are parsed here, after the parser has recursively
+        processed all operators of higher precedence."""
         if not left:
             left = self.parse_factor() 
         ct = self.lexer.current_token()
@@ -51,12 +74,17 @@ class Expression_parser:
             return left
 
     def parse_factor(self):
+        """Return a "factor" node.
+
+        Variable identifiers, parenthesis, increment/decrement and
+        negation/non-negation signs have the highest level of 
+        precedence and are processed here. In the case of parenthesis,
+        the recursion starts again from the expression stage."""
         ct = self.lexer.current_token()
         if ct.lexeme == "+" or ct.lexeme == "-":
             sign_node = Node()
             sign_node.typ = ct.lexeme
-            #consume + or -
-            self.lexer.next_token()
+            self.lexer.next_token() #consume + or -
             sign_node.add_child(self.parse_factor())
             return sign_node
         if ct.typ == "double":
@@ -114,11 +142,11 @@ class Expression_parser:
             return res_node
 
     def parse_preincrement_predecrement(self):
+        """Return a preincrement/predecrement node."""
         ct = self.lexer.current_token()
         op_node = Node()
         op_node.typ = ct.lexeme
-        op_node.attributes["pre"] = True
-        #consume ++ or --
+        op_node.attributes["pre"] = True #consume ++ or --
         ct = self.lexer.next_token()
         res_node = Node()
         res_node.attributes["identifier"] = ct.lexeme
@@ -128,12 +156,12 @@ class Expression_parser:
         return op_node
 
     def parse_postincrement_postdecrement(self):
+        """Return a postincrement/postdecrement node."""
         ct = self.lexer.current_token()
         var_node = Node()
         var_node.attributes["identifier"] = ct.lexeme
         var_node.typ = "VARIABLE"
-        #consume identifier
-        ct = self.lexer.next_token()
+        ct = self.lexer.next_token() #consume identifier
         op_node = Node()
         op_node.typ = ct.lexeme
         op_node.attributes["pre"] = False
@@ -142,12 +170,12 @@ class Expression_parser:
         return op_node
 
     def parse_function_call(self):
+        """Return a function call node."""
         ct = self.lexer.current_token()
         func_node = Node()
         func_node.attributes["identifier"] = ct.lexeme
         func_node.typ = "FUNCTION_CALL"
-        #consume identifier
-        ct = self.lexer.next_token()
+        ct = self.lexer.next_token() #consume identifier
         self.util.match("(")
         ct = self.lexer.current_token()
         arg_node = Node()

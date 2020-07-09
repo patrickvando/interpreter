@@ -1,4 +1,5 @@
 class Node():
+    """The Node class is used to represent nodes in the Abstract Syntax Tree (AST) produced by the Parser."""
     def __init__(self):
         self.typ = None
         self.attributes = {}

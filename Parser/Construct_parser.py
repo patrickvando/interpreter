@@ -93,6 +93,7 @@ class Construct_parser:
         return option_node
 
     def parse_else(self):
+        """Return an option node corresponding to an else."""
         self.util.match("else") 
         exp_parser = Expression_parser(self.lexer)
         option_node = Node()

@@ -1,4 +1,5 @@
 class Data_types:
+    """Categorizations for different lexical token types."""
     types = set(["int", "double", "bool"])
     constructs = set(["if", "while", "for"])
     keywords = ["if", "while", "for", "true", "false"]
