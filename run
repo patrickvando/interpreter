@@ -1,4 +1,5 @@
 #!/bin/bash
+# Use for running a .asm file. See README for details.
 pname="$1"
 nasm -g -f elf64 -l "${pname}.lst"  "${pname}.asm"
 gcc -static -m64 -o "${pname}"  "${pname}.o"
