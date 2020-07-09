@@ -1,4 +1,5 @@
 class Instructions:
+    """The Instructions class contains the literal NASM instructions corresponding to each instruction used in the various classes in the Compiler."""
     R1 = "rax"
     R2 = "rcx"
     R3 = "rdx"

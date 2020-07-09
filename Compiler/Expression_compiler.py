@@ -1,10 +1,19 @@
 class Expression_compiler:
+    """The Expression_compiler class descends down all expression nodes in the AST and turns them into sequences of assembly instructions.
+
+    Expression nodes are nodes that evaluate to some result. Examples
+    of expressions include arithmetic expressions, like (1*2)+(3/4),
+    and function calls that return a number."""
+ 
     STANDALONE_EXPRESSIONS = ["FUNCTION_CALL", "++", "--"]
     def __init__(self, symbol_table):
         self.symbol_table = symbol_table
    
-    #compile expression and place onto stack
     def compile_expression(self, root):
+        """Return a sequence of instructions, given an expression node.
+        
+        The value corresponding to the expression result is pushed
+        onto the stack."""
         res = []
         if root.typ == "CONSTANT":
             if root.attributes["type"] == "int":
@@ -52,12 +61,18 @@ class Expression_compiler:
         return res
 
     def compile_int(self, root):
+        """Return a sequence of instructions, given a constant boolean node.
+        
+        The resulting value is pushed onto the stack."""
         res = []
         res += instr.mov(instr.R1, root.attributes["val"])
         res += instr.push(instr.R1)
         return res
 
     def compile_boolean(self, root):
+        """Return a sequence of instructions, given a constant boolean node.
+        
+        The resulting value is pushed onto the stack."""
         res = []
         if root.attributes["val"] == True:
             res += instr.mov(instr.R1, 1)
@@ -67,6 +82,9 @@ class Expression_compiler:
         return res
 
     def compile_inc_dec(self, root, op):
+        """Return a sequence of instructions, given an increment/decrement node.
+        
+        The resulting value is pushed onto the stack."""
         res = []
         variable = root.children[0].copy_attributes()
         res += self.load_variable_location(variable)
@@ -81,6 +99,9 @@ class Expression_compiler:
         return res
 
     def compile_relational(self, root, op):
+        """Return a sequence of instructions, given an relational operator node.
+        
+        The resulting value is pushed onto the stack."""
         res = []
         res += self.load_operands(root)
         next_label = self.symbol_table.next_label()
@@ -93,8 +114,8 @@ class Expression_compiler:
         return res
 
 
-    #loads operands into R1 and R2
     def load_operands(self, root):
+        """Return a sequence of instructions that processes two child expression nodes and then loads the corresponding results into the working registers."""
         res = []
         res += self.compile_expression(root.children[0])
         res += self.compile_expression(root.children[1])
@@ -103,6 +124,9 @@ class Expression_compiler:
         return res
 
     def compile_divide(self, root):
+        """Return a sequence of instructions, given a division node.
+        
+        The resulting value is pushed onto the stack."""
         res = []
         res += self.load_operands(root)
         res += instr.mov(instr.R3, 0)
@@ -111,6 +135,9 @@ class Expression_compiler:
         return res
 
     def compile_modulus(self, root):
+        """Return a sequence of instructions, given a modulus node.
+        
+        The resulting value is pushed onto the stack."""
         res = []
         res += self.load_operands(root)
         res += instr.mov(instr.R3, 0)
@@ -119,6 +146,9 @@ class Expression_compiler:
         return res
 
     def compile_multiply(self, root):
+        """Return a sequence of instructions, given a multiply node.
+        
+        The resulting value is pushed onto the stack."""
         res = []
         res += self.load_operands(root)
         res += instr.mov(instr.R3, 0)
@@ -127,6 +157,9 @@ class Expression_compiler:
         return res
 
     def compile_and(self, root):
+        """Return a sequence of instructions, given an and node.
+        
+        The resulting value is pushed onto the stack."""
         res = []
         res += self.load_operands(root)
         res += instr.and_(instr.R1, instr.R2)
@@ -134,6 +167,9 @@ class Expression_compiler:
         return res
 
     def compile_or(self, root):
+        """Return a sequence of instructions, given an or node.
+        
+        The resulting value is pushed onto the stack."""
         res = []
         res += self.load_operands(root)
         res += instr.or_(instr.R1, instr.R2)
@@ -141,6 +177,9 @@ class Expression_compiler:
         return res
 
     def compile_add(self, root):
+        """Return a sequence of instructions, given an addition node.
+        
+        The resulting value is pushed onto the stack."""
         res = []
         if len(root.children) == 1:
             res += self.compile_expression(root.children[0])
@@ -151,6 +190,9 @@ class Expression_compiler:
         return res
 
     def compile_subtract(self, root):
+        """Return a sequence of instructions, given a subtraction node.
+        
+        The resulting value is pushed onto the stack."""
         res = []
         if len(root.children) == 1:
             res += self.compile_expression(root.children[0])
@@ -164,6 +206,9 @@ class Expression_compiler:
         return res
 
     def compile_function_call(self, root):
+        """Return a sequence of instructions, given a function call node.
+        
+        The resulting value is pushed onto the stack."""
         res = []
         res += instr.xor(instr.R1, instr.R1)
         function, depth = self.symbol_table.get(root.attributes["identifier"])
@@ -173,15 +218,13 @@ class Expression_compiler:
         res += instr.call(function["label"])
         for arg in arguments.children:
             res += instr.pop(instr.R2)
-        #store result of function
-        res += instr.push(instr.R1)
+        res += instr.push(instr.R1) # store result of function
         return res
 
-    #pushes the memory location of the variable onto the stack
     def load_variable_location(self, variable):
+        """Return a sequence of instructions that pushes the location of a variable in the current scope or in a containing scope onto the stack. """
         res = []
         variable, depth = self.symbol_table.get(variable["identifier"])
-        #assume depth 0 right now
         res += instr.mov(instr.R1, instr.BP)
         for k in range(depth):
             res += instr.mov(instr.R1, instr.memloc(instr.R1))

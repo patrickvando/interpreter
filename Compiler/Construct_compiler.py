@@ -1,9 +1,15 @@
 class Construct_compiler:
+    """The Construct_compiler class descends down all construct nodes in the AST and turns them into sequences of instructions.
+
+    For loops, while loops, and if-elseif-else constructs are all 
+    represented as construct nodes."""
+
     CONSTRUCTS = ["IF", "WHILE", "FOR"]
     def __init__(self, symbol_table):
         self.symbol_table = symbol_table
 
     def compile_construct(self, root):
+        """Return a sequence of assembly instructions, given a construct node."""
         res = []
         if root.typ == "IF":
             res += self.compile_if(root)
@@ -14,6 +20,7 @@ class Construct_compiler:
         return res
 
     def compile_if(self, root):
+        """Return a sequence of assembly instructions, given an if node."""
         res = []
         continue_label = self.symbol_table.next_label()
         next_label = self.symbol_table.next_label()
@@ -35,6 +42,7 @@ class Construct_compiler:
         return res
 
     def compile_for(self, root):
+        """Return a sequence of assembly instructions, given a for node."""
         res = []
         loop_label = self.symbol_table.next_label()
         continue_label = self.symbol_table.next_label()
@@ -58,6 +66,7 @@ class Construct_compiler:
         return res
 
     def compile_while(self, root):
+        """Return a sequence of assembly instructions, given a while node."""
         res = []
         loop_label = self.symbol_table.next_label()
         continue_label = self.symbol_table.next_label()

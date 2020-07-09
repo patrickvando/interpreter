@@ -1,8 +1,15 @@
 class Statement_compiler:
+    """The Statement_compiler class descends down all statement nodes in the AST and turns them into sequences of assembly instructions.
+
+    Variable assignments, function definitions, function calls, 
+    increment/decrement and return statements are all represented as
+    statement nodes."""
+
     def __init__(self, symbol_table):
         self.symbol_table = symbol_table
 
     def compile_statement_list(self, root):
+        """Return a sequence of assembly instructions, given a statement_list node."""
         res = []
         res += self.allocate_variables(root)
         cc = Construct_compiler(self.symbol_table)
@@ -14,6 +21,7 @@ class Statement_compiler:
         return res
 
     def compile_standalone_statement(self, root):
+        """Return a sequence of assembly instructions, given a statement node."""
         res = []
         ec = Expression_compiler(self.symbol_table)
         if root.typ == "VARIABLE_DECLARATION" or root.typ == "ASSIGN":
@@ -27,6 +35,7 @@ class Statement_compiler:
         return res
 
     def compile_assignment(self, root):
+        """Return a sequence of assembly instructions, given an assignment node."""
         res = []
         variable = root.children[0].copy_attributes()
         expression = root.children[1]
@@ -39,6 +48,7 @@ class Statement_compiler:
         return res
 
     def allocate_variables(self, root):
+        """Return a sequence of instructions that moves the stack pointer to allocate space for all variables in the current scope."""
         res = []
         st = ""
         def recurse(root, offset):
@@ -52,11 +62,12 @@ class Statement_compiler:
                     offset = recurse(child, offset)
             return offset
         offset = recurse(root, 0)
-        #allocate space for variables
+        # allocate space for variables
         res += instr.add(instr.SP, offset)
         return res
 
     def compile_function_definition(self, root):
+        """Return a sequence of instructions, given a function definition node."""
         res = []
         function = {}
         function["label"] = self.symbol_table.next_label()
@@ -81,19 +92,19 @@ class Statement_compiler:
         res += sc.compile_statement_list(body)
         res += instr.mov(instr.SP, instr.BP)
         res += instr.pop(instr.BP)
-        #default return value of 0
-        res += instr.mov(instr.R1, 0)
+        res += instr.mov(instr.R1, 0) # default return value of 0
         res += instr.ret()
         res += instr.addlabel(continue_label)
         self.symbol_table.pop_table()
         return res
 
     def compile_function_return(self, root):
+        """Return a sequence of instructions, given a return call."""
         res = []
         return_value = root.children[0]
         ec = Expression_compiler(self.symbol_table)
         res += ec.compile_expression(return_value)
-        res += instr.pop(instr.R1)
+        res += instr.pop(instr.R1) # Store the return value in R1
         res += instr.mov(instr.SP, instr.BP)
         res += instr.pop(instr.BP)
         res += instr.ret()

@@ -1,4 +1,5 @@
 class Symbol_table:
+    """The Symbol_table class is used to record variable and function identifiers found within a single scope."""
     def __init__(self):
         self.table = {}
 
@@ -18,6 +19,7 @@ class Symbol_table:
         return res
 
 class Symbol_table_stack:
+    """The Symbol_table_stack class is used to hold information about multiple scopes with their accompanying variable and function identifiers."""
     def __init__(self):
         self.stack = []
         self.push_table()
