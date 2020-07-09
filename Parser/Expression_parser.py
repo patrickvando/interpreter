@@ -39,7 +39,6 @@ class Expression_parser:
         Simple operators (+,-) are considered to have the next lowest 
         precedence, so they are parsed here, after the parser has recursively
         processed all operators of higher precedence."""
-        Simple operators 
         ct = self.lexer.current_token()
         if not left:
             left = self.parse_term()
