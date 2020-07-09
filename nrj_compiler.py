@@ -6,13 +6,21 @@ from Parser.Statement_parser import Statement_parser
 from Compiler.Compiler_main import Compiler_main
 
 def main(filename):
-    """Call the lexer, parser, and compiler."""
-    lex  = Lexer(filename)
+    """Turn a .nrj source file into a .asm assembly file.
+    
+    Works in three stages:
+        1. The source file is turned into a stream of lexical tokens 
+        via the Lexer.
+        2. The stream of lexical tokens is parsed into an Abstract 
+        Syntax Tree (AST) via the Parser.
+        3. The Abstract Syntax Tree (AST) is traversed and turned
+        into assembly instructions via the Compiler."""
+    lex  = Lexer(filename) # Create the stream of lexical tokens
     stat_parser = Statement_parser(lex)
-    stat_list = stat_parser.parse_to_end()
-    head, tail = os.path.splitext(filename)
+    stat_list = stat_parser.parse_to_end() # Turn the stream into an AST
+    head, tail = os.path.splitext(filename) 
     compiler = Compiler_main(head + ".asm")
-    compiler.compile_ast(stat_list)
+    compiler.compile_ast(stat_list) # Turn the AST into assembly code
 
 if __name__ == '__main__':
     arg_len = len(sys.argv)
