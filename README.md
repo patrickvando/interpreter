@@ -20,12 +20,22 @@ gcd.asm
 <tr>
 <td>
 <pre>
-{
-    "id": 1,
-    "username": "joe",
-    "email": "joe@example.com",
-    "order_id": "3544fc0"
+int a = 1071;
+int b = 462;
+int gcd(int a, int b){
+    if (a > b){
+        int c = a;
+        a = b;
+        b = c;
+    }
+    if (b % a == 0){
+        return a;
+    } else {
+        return gcd(b % a, a);
+    }
 }
+int greatest_common_divisor = gcd(a, b);
+print(greatest_common_divisor);
 </pre>
 </td>
 <td>
