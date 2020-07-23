@@ -18,7 +18,7 @@ gcd.asm
 </th>
 </tr>
 <tr>
-<td>
+<td style="vertical-align: top;">
 <pre>
 int a = 1071;
 int b = 462;
