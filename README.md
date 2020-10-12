@@ -9,7 +9,7 @@ This compiler takes in a program written in NRJ, a made-up high level source lan
 
 ## Example
 
-`gcd.nrj` is an NRJ file that recursively calculates the greatest common divisor of 1071 and 462 using the Euclidean Algorithm ([details on wikipedia](https://en.wikipedia.org/wiki/Euclidean_algorithm)). This NRJ file should be straightforward to read - an equivalent Java program would look very similar.
+`gcd.nrj` is an NRJ file that recursively calculates the greatest common divisor of 1071 and 462 using the [Euclidean Algorithm](https://en.wikipedia.org/wiki/Euclidean_algorithm). This NRJ file should be straightforward to read - an equivalent Java program would look very similar.
 
 If the compiler takes `gcd.nrj` as input, it will output `gcd.asm`. When `gcd.asm` is assembled using NASM and then executed, the number 21 will be printed to the std out.
 
