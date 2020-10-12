@@ -5,7 +5,7 @@
 
 A typical compiler takes a program in a high level source language - like Java or Python - and translates it into a lower level language, like assembly.
 
-This compiler takes in a program written in NRJ, a made-up high level source language that is syntactically very similar to Java. It puts out Intel x86 64-bit assembly code. Further details on NRJ are given in the [NRJ Language Specifications section](#NRJ-Language-Specifications).
+This compiler takes in a program written in NRJ, a made-up high level source language that is syntactically very similar to Java. It puts out 64-bit Intel x86 assembly code. Further details on NRJ are given in the [NRJ Language Specifications section](#NRJ-Language-Specifications).
 
 ## Example
 
