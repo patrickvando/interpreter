@@ -1,66 +1,76 @@
-from .Buffer import Buffer
-from .Token import Token
-from .Word_tokenizer import Word_tokenizer
-from .Number_tokenizer import Number_tokenizer
-from .Symbol_tokenizer import Symbol_tokenizer
+import re
+import sys
+class Token:
+    number_type, number_pattern = "number", "[0-9]+"
+    special_type, special_pattern = "special", "|".join(
+            [re.escape(sp) for sp in
+                ["++", "--", "==", "<=", ">=", "!=", "<", ">", "=",
+                    "!", "+", "-", "/", "%", "}", "{", "]", "[", ")",
+                    "(", ";", ","]])
+    word_type, word_pattern = "word", "[a-zA-Z][a-zA-Z0-9_]*"
+    end_type = "END"
+
+    def __init__(self, type_, lexeme, line_num):
+        self.type_ = type_
+        self.lexeme = lexeme
+        self.line_num = line_num
+
 class Lexer:
-    """The Lexer class is used to break the raw text of the NRJ source file into "tokens".
-    
-    All of the raw text in a valid NRJ source file can be broken into
-    word, number, or symbol tokens. The Lexer class is responsible for
-    streaming these tokens to the Parser class, one at a time. The
-    Lexer class stores tokens until they are "consumed", which
-    allows previous tokens to be put back into the stream.""" 
-
     def __init__(self, filename):
-        self.buf = Buffer(filename)
-        self.word = Word_tokenizer(self.buf)
-        self.number = Number_tokenizer(self.buf)
-        self.symbol = Symbol_tokenizer(self.buf)
+        try:
+            self.f = open(filename)
+        except IOError:
+            print('File "{}" could not be found.'.format(filename))
+            exit(0)
+        self.line_num = 1
+        self.token_buffer = []    
         self.current = -1
-        self.token_buffer = []
 
-    def current_token(self):
-        """Return the current token in the stream."""
-        self.current = max(-1, self.current)
-        if self.current == -1:
-            return None
-        else:
-            return self.token_buffer[self.current]
+    def next_token(self):
+        self.current += 1
+        return self.current_token()
 
     def prev_token(self):
-        """Return the previous token in the stream."""
         self.current -= 1
         return self.current_token()
 
-    def next_token(self):
-        """Return the next token in the stream."""
-        self.current += 1
-        if self.current < len(self.token_buffer):
-            return self.current_token()
-        c = self.buf.go_forward()
-        while c.isspace():
-            c = self.buf.go_forward()
-        self.buf.go_backward()
-        if c.isalpha():
-            token = self.word.extract()
-        elif c.isdigit():
-            token = self.number.extract()
-        elif c in Symbol_tokenizer.acceptable_symbols:
-            token = self.symbol.extract()
-        elif c == '':
-            token = Token()
-            token.typ = "END"
-        self.buf.consume()
-        self.token_buffer.append(token)
-        return token
+    def current_token(self):
+        self.current = min(len(self.token_buffer), self.current)
+        self.current = max(-1, self.current)
+        while self.current == len(self.token_buffer):
+            if not self.process_line():
+                break
+        if self.current == len(self.token_buffer):
+            return Token(Token.end_type, None, self.line_num)
+        if self.current == -1:
+            return None
+        return self.token_buffer[self.current]
 
     def consume(self):
-        """Remove all previous tokens up to and including the current token from the stream."""
         self.token_buffer = self.token_buffer[self.current + 1:]
         self.current = -1
 
-    def print_token(self, token):
-        """Print a token. For debugging purposes."""
-        print("Token type: {} \t Lexeme: {} \t Attributes: {}".format(token.typ, token.lexeme, token.attributes))
+    def process_line(self):
+        line = self.f.readline()
+        if not line:
+            return False
+        token_pattern = "({})|({})|({})|(\S+)".format(Token.number_pattern, Token.word_pattern, Token.special_pattern)
+        for match in re.findall(token_pattern, line):
+            number, word, special, other = match
+            if number:
+                token = Token(Token.number_type, number, self.line_num)
+            elif word:
+                token = Token(Token.word_type, word, self.line_num)
+            elif special:
+                token = Token(Token.special_type, special, self.line_num)
+            else:
+                sys.exit("Unrecognized token \"{}\" on line {}".format(other, self.line_num))
+            self.token_buffer.append(token)
+        self.line_num += 1
+        return True
 
+lex = Lexer("fib.oats")
+ct = lex.next_token()
+while ct.type_ != Token.end_type:
+    print(ct.lexeme)
+    ct = lex.next_token()

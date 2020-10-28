@@ -1,8 +1,8 @@
 class Buffer:
-    """The Buffer class is used to process raw text.
+    """The Buffer class is used to process text from a file.
     
     The Buffer class streams characters to the Lexer class.
-    characters are stored until they are "consumed", allowing
+    Characters are stored until they are "consumed", allowing
     text to be put back into the stream."""
     
     def __init__(self, filename):
@@ -11,21 +11,23 @@ class Buffer:
         self.chunk_size = 64
         self.current = -1 
     
-    def go_forward(self):
-        """Return the next character in the stream."""
+    def forward(self):
+        """Return the next character in the stream.
+        If there are no characters remaining in the stream, return None."""
         self.current += 1
         if self.current == len(self.text):
             self.text += self.f.read(self.chunk_size)
         if self.current == len(self.text):
             self.current = len(self.text)
-            return ""
+            return None 
         return self.text[self.current]
 
-    def go_backward(self):
-        """Return the previous character in the stream."""
+    def backward(self):
+        """Return the previous character in the stream.
+        If there are no previous characters in the stream, return None."""
         self.current -= 1
-        if self.current == -1:
-            return ""
+        if self.current < 0:
+            return None 
         else:
             return self.text[self.current]
 

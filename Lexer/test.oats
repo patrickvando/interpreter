@@ -1,0 +1,3 @@
+func hello_world(arg){
+    print(arg);
+}
