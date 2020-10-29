@@ -1,0 +1,3 @@
+check if variable is a reserved word, or has been defined as a function (?) elsewhere -> in compiler?
+
+break out "lexer" into the common file?
