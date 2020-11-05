@@ -1,5 +1,4 @@
-from Lexer.Lexer import Token
-from .Common import * 
+from Common.Common import * 
 from collections import deque
 class StatementParser:
     def __init__(self, lexer):
@@ -49,15 +48,15 @@ class StatementParser:
         root.children.append(queue.popleft())
         root.children.append(eparser.parseExpression())
         ct = self.lex.current_token()
-        nt = self.lex.next_token()
-        while ct.lexeme == "," and nt.type_ == Token.WORD_TYPE:
+        while ct.lexeme == ",":
             if not queue:
-                illegal_token(nt, "Too many operands on right side.")
-            self.root.append(queue.popleft())
-            self.root.append(eparser.parseExpression())
-            ct = self.lex.next_token()
-            nt = self.lex.next_token()
-        self.lex.prev_token()
+                illegal_token(ct, "Too many operands on right side.")
+            match_lexeme(self.lex, ",")
+            root.children.append(queue.popleft())
+            root.children.append(eparser.parseExpression())
+            ct = self.lex.current_token()
+        if queue:
+            illegal_token(ct, "Too many operands on left side.")
         match_lexeme(self.lex, ";")
         return root
 

@@ -1,20 +1,6 @@
 import re
 import sys
-class Token:
-    NUMBER_TYPE, NUMBER_PATTERN = "number", "[0-9]+"
-    SPECIAL_TYPE, SPECIAL_PATTERN = "special", "|".join(
-            [re.escape(sp) for sp in
-                ["++", "--", "==", "<=", ">=", "!=", "<", ">", "=",
-                    "!", "+", "-", "/", "%", "}", "{", "]", "[", ")",
-                    "(", ";", ","]])
-    WORD_TYPE, WORD_PATTERN = "word", "[a-zA-Z][a-zA-Z0-9_]*"
-    END_TYPE = "END"
-
-    def __init__(self, type_, lexeme, line_num):
-        self.type_ = type_
-        self.lexeme = lexeme
-        self.line_num = line_num
-
+from Common.Common import *
 class Lexer:
     def __init__(self, filename):
         try:
