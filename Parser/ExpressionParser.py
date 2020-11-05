@@ -3,50 +3,60 @@ class ExpressionParser:
     def __init__(self, lexer):
         self.lex = lexer
 
-    def parseExpression(self, left=None):
+    def parse_expression(self, left=None):
         if not left:
-            left = self.parseSimpleExpression()
+            left = self.parse_simple_expression()
         ct = self.lex.current_token()
-        if ct.lexeme in EXP_LEXEMES:
+        if ct.lexeme in Lexeme.EXPS:
             op_node = Node(Node.LEXEME_TO_TYPE[ct.lexeme])
             op_node.children.append(left)
             self.lex.next_token()
-            op_node.children.append(self.parseSimpleExpression())
-            return self.parseExpression(op_node)
+            op_node.children.append(self.parse_simple_expression())
+            return self.parse_expression(op_node)
         else:
             return left
 
-    def parseSimpleExpression(self, left=None):
+    def parse_simple_expression(self, left=None):
         if not left:
-            left = self.parseTerm()
+            left = self.parse_term()
         ct = self.lex.current_token()
-        if ct.lexeme in SIMPLE_EXP_LEXEMES:
+        if ct.lexeme in Lexeme.SIMPLE_EXPS:
             op_node = Node(Node.LEXEME_TO_TYPE[ct.lexeme])
             op_node.children.append(left)
             self.lex.next_token()
-            op_node.children.append(self.parseTerm())
-            return self.parseSimpleExpression(op_node)
+            op_node.children.append(self.parse_term())
+            return self.parse_simple_expression(op_node)
         else:
             return left
 
-    def parseTerm(self, left=None):
+    def parse_term(self, left=None):
         if not left:
-            left = self.parseFactor()
+            left = self.parse_factor()
         ct = self.lex.current_token()
-        if ct.lexeme in TERM_LEXEMES:
+        if ct.lexeme in Lexeme.TERMS:
             op_node = Node(Node.LEXEME_TO_TYPE[ct.lexeme])
             op_node.children.append(left)
             self.lex.next_token()
-            op_node.children.append(self.parseFactor())
-            return self.parseTerm(op_node)
+            op_node.children.append(self.parse_factor())
+            return self.parse_term(op_node)
         else:
             return left
 
 
-    def parseFactor(self):
+    def parse_factor(self):
         ct = self.lex.current_token()
         self.lex.next_token()
         if ct.type_ == Token.NUMBER_TYPE:
             return Node(Node.NUMBER_TYPE, ct.lexeme, ct)
-        elif ct.type_ == TOKEN.WORD_TYPE:
+        elif ct.type_ == Token.WORD_TYPE and ct.lexeme not in Lexeme.RESERVED:
             return Node(Node.VARIABLE_TYPE, ct.lexeme, ct)
+        elif ct.lexeme == Lexeme.SUB:
+            negation_node = Node(Node.SUB_TYPE)
+            negation_node.children.append(self.parse_factor())
+            return negation_node
+        elif ct.lexeme == Lexeme.OPEN_PAREN:
+            exp_node = self.parse_expression()
+            self.lex.match(Lexeme.CLOSE_PAREN)
+            return exp_node
+        else:
+            illegal_statement(ct)

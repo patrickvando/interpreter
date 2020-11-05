@@ -36,6 +36,13 @@ class Lexer:
         self.token_buffer = self.token_buffer[self.current + 1:]
         self.current = -1
 
+    def match(self, expected_lexeme):
+        ct = self.current_token()
+        self.consume()
+        if ct.lexeme != expected_lexeme:
+            exit('Unexpected token "{}" on line {}.\nExpected token "{}"'.format(ct.lexeme, ct.line_num, expected_lexeme))
+        self.next_token()
+
     def process_line(self):
         if self.f.closed:
             return False
