@@ -16,19 +16,22 @@ class StatementParser:
         ct = self.lex.current_token()
         if ct.lexeme in Lexeme.CONSTRUCTS:
             cparser = ConstructParser(self.lex)
-            return cparser.parseConstruct()
+            statement_node = cparser.parseConstruct()
         elif ct.type_ == Token.WORD_TYPE:
             #Look ahead for function call or assignment
             nt = self.lex.next_token()
             self.lex.prev_token()
             if nt.lexeme == Lexeme.OPEN_PAREN:
-                return self.parse_function_call()
+                eparser = ExpressionParser(self.lex)
+                statement_node = eparser.parse_function_call()
             elif nt.lexeme == Lexeme.EQUALS or nt.lexeme == Lexeme.COMMA:
-                return self.parse_assignment()
+                statement_node = self.parse_assignment()
             else:
                 illegal_token(ct, 'Expected assignment or function call.')
         else:
             illegal_token(ct, 'Expected assignment, function call, function definition, or boolean construct.')
+        self.lex.match(Lexeme.SEMICOLON)
+        return statement_node
 
     def parse_assignment(self):
         root = Node(Node.ASSIGNMENT_TYPE)
@@ -58,23 +61,7 @@ class StatementParser:
             ct = self.lex.current_token()
         if queue:
             illegal_token(ct, "Too many operands on left side.")
-        self.lex.match(Lexeme.SEMICOLON)
         return root
-
-    #function calls belong in expressions, FIX IT
-    # -------------------HERE 
-    def parse_function_call(self):
-        ct = current_token()
-        #maybe dont check this here? check it beforehand? maybe the lexer should filter out all reserved words in the first place?
-        check_valid_name(ct) 
-        call_node = Node(Node.FUNC_CALL_TYPE, ct.lexeme) 
-        self.lex.match(Lexeme.OPEN_PAREN)
-        ct = self.lex.current_token()
-        if ct.lexeme != Lexeme.CLOSE_PAREN:
-            expression_par
-            call_node.children.append(
-        while ct.lexeme == Lexeme.
-        pass
 
 from .ConstructParser import ConstructParser
 from .ExpressionParser import ExpressionParser

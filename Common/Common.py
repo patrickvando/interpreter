@@ -75,8 +75,9 @@ def check_valid_name(token):
     if token in Lexeme.RESERVED:
         illegal_token(token, "This is a reserved word.")
 
-def illegal_token(token, error_message):
-    exit('Illegal token "{}" on line {}.\n{}'.format(token.lexeme, token.line_num, error_message))
+def illegal_token(token, error_message=""):
+    msg = 'Illegal token "{}" on line {}.' + (error_message != "") * "\n" + '{}'
+    exit(msg.format(token.lexeme, token.line_num, error_message))
 
 def illegal_statement(token):
     exit('Illegal statement on line {}.'.format(token.line_num))
