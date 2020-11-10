@@ -27,7 +27,7 @@ class Lexer:
             if not self.process_line():
                 break
         if self.current == len(self.token_buffer):
-            return Token(Token.END_TYPE, None, self.line_num)
+            return Token(Token.END_TYPE, "End of File", self.line_num)
         if self.current == -1:
             return None
         return self.token_buffer[self.current]

@@ -41,7 +41,7 @@ class Token:
         self.line_num = line_num
 
 class Node:
-    VARIABLE_TYPE, NUMBER_TYPE, STATEMENT_LIST_TYPE, ASSIGNMENT_TYPE, FUNC_CALL_TYPE, FUNC_DEF_TYPE, RETURN_TYPE, WHILE_TYPE, FOR_TYPE, IF_TYPE, ELSEIF_TYPE, PRINT_TYPE, GET_TYPE = "variable", "number", "statement_list", "assignment", "func_call", "func_def", "return", "while", "for", "if", "elseif", "print", "get";
+    VARIABLE_TYPE, NUMBER_TYPE, STATEMENT_LIST_TYPE, PARAMETER_LIST_TYPE, ASSIGNMENT_TYPE, FUNC_CALL_TYPE, FUNC_DEF_TYPE, RETURN_TYPE, WHILE_TYPE, FOR_TYPE, IF_TYPE, ELSEIF_TYPE, PRINT_TYPE, GET_TYPE = "variable", "number", "statement_list", "parameter_list", "assignment", "func_call", "func_def", "return", "while", "for", "if", "elseif", "print", "get";
 
     LT_TYPE, LTE_TYPE, GT_TYPE, GTE_TYPE, EQ_TYPE, NEQ_TYPE = "LT", "LTE", "GT", "GTE", "EQ", "NEQ"
     EXP_TYPES = [LT_TYPE, LTE_TYPE, GT_TYPE, GTE_TYPE, EQ_TYPE, NEQ_TYPE]

@@ -52,7 +52,7 @@ class ExpressionParser:
             nt = self.lex.current_token()
             if nt.lexeme == Lexeme.OPEN_PAREN:
                 self.lex.prev_token()
-                return self.parse_function()
+                return self.parse_function_call()
             else:
                 return Node(Node.VARIABLE_TYPE, ct.lexeme, ct)
         elif ct.lexeme == Lexeme.SUB:
@@ -64,7 +64,7 @@ class ExpressionParser:
             self.lex.match(Lexeme.CLOSE_PAREN)
             return exp_node
         else:
-            illegal_token(ct)
+            illegal_token(ct, "Expected number, variable, function call or subexpression.")
 
     def parse_function_call(self):
         ct = self.lex.current_token()
