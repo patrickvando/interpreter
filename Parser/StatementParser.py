@@ -16,7 +16,10 @@ class StatementParser:
         ct = self.lex.current_token()
         if ct.lexeme in Lexeme.CONSTRUCTS:
             cparser = ConstructParser(self.lex)
-            statement_node = cparser.parseConstruct()
+            statement_node = cparser.parse_construct()
+        elif ct.lexeme == Lexeme.RETURN:
+            statement_node = self.parse_return()
+            self.lex.match(Lexeme.SEMICOLON)
         elif ct.type_ == Token.WORD_TYPE:
             #Look ahead for function call or assignment
             nt = self.lex.next_token()
@@ -62,6 +65,14 @@ class StatementParser:
         if queue:
             illegal_token(ct, "Too many operands on left side.")
         return assignment_node
+
+    def parse_return(self):
+        self.lex.match(Lexeme.RETURN)
+        return_node = Node(Node.RETURN_TYPE)
+        eparser = ExpressionParser(self.lex)
+        return_node.children.append(eparser.parse_expression())
+        return return_node
+
 
 from .ConstructParser import ConstructParser
 from .ExpressionParser import ExpressionParser

@@ -1,7 +1,8 @@
 check if variable is a reserved word, or has been defined as a function (?) elsewhere -> in compiler?
 
 break out "lexer" into the common file?
-
-do i need Node to be able to store information about the token that made it? I'm assuming the parse tree will take care of things?
-
-work on construct parser
+add ++ ->>>> might be necessary for traditional for loop
+just leave out pre-increment?
+parse comment
+unexpected in filename
+remove unnecessary stuff from Node(Node.TYPE, token<<- here, token)

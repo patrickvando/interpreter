@@ -42,7 +42,6 @@ class ExpressionParser:
         else:
             return left
 
-
     def parse_factor(self):
         ct = self.lex.current_token()
         self.lex.next_token()
