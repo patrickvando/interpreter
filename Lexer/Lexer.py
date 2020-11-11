@@ -52,9 +52,9 @@ class Lexer:
         if not line:
             self.f.close()
             return False
-        token_pattern = "({})|({})|({})|(\S+)".format(Token.NUMBER_PATTERN, Token.WORD_PATTERN, Token.SPECIAL_PATTERN)
+        token_pattern = "({})|({})|({})|(\S+)".format(Token.SPECIAL_PATTERN, Token.NUMBER_PATTERN, Token.WORD_PATTERN)
         for match in re.findall(token_pattern, line):
-            number, word, special, other = match
+            special, number, word, other = match
             if number:
                 token = Token(Token.NUMBER_TYPE, number, self.line_num)
             elif word:

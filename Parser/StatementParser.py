@@ -73,6 +73,5 @@ class StatementParser:
         return_node.children.append(eparser.parse_expression())
         return return_node
 
-
 from .ConstructParser import ConstructParser
 from .ExpressionParser import ExpressionParser

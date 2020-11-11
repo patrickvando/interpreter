@@ -55,6 +55,18 @@ class ConstructParser:
         if_node.children.append(eparse.parse_expression())
         self.lex.match(Lexeme.CLOSE_PAREN)
         if_node.children.append(self.parse_body())
+        ct = self.lex.current_token()
+        while ct.lexeme == Lexeme.ELSEIF:
+            self.lex.next_token()
+            self.lex.match(Lexeme.OPEN_PAREN)
+            if_node.children.append(eparse.parse_expression())
+            self.lex.match(Lexeme.CLOSE_PAREN)
+            if_node.children.append(self.parse_body())
+            ct = self.lex.current_token()
+        if ct.lexeme == Lexeme.ELSE:
+            self.lex.next_token()
+            if_node.children.append(Node(Node.NUMBER_TYPE, 1))
+            if_node.children.append(self.parse_body())
         return if_node
     
     def parse_while(self):
