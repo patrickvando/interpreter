@@ -38,7 +38,7 @@ class StatementParser:
         return statement_node
 
     def parse_assignment(self):
-        assignment_node = Node(Node.ASSIGNMENT_TYPE)
+        assignment_node = Node(Node.ASSIGN_TYPE)
         ct = self.lex.current_token()
         check_valid_name(ct)
         queue = deque([Node(Node.VARIABLE_TYPE, ct.lexeme, ct)])

@@ -19,7 +19,7 @@ class ConstructParser:
     def parse_function_declaration(self):
         ct = self.lex.next_token()
         check_valid_name(ct) 
-        func_def_node = Node(Node.FUNC_DEF_TYPE, ct.lexeme)
+        func_def_node = Node(Node.FUNC_DEF_TYPE, ct.lexeme, ct)
         plist_node = Node(Node.PARAMETER_LIST_TYPE)
         func_def_node.children.append(plist_node)
         self.lex.next_token()

@@ -47,6 +47,18 @@ class ExpressionParser:
         self.lex.next_token()
         if ct.type_ == Token.NUMBER_TYPE:
             return Node(Node.NUMBER_TYPE, ct.lexeme, ct)
+        elif ct.lexeme == Lexeme.SUB:
+            negation_node = Node(Node.SUB_TYPE)
+            negation_node.children.append(self.parse_factor())
+            return negation_node
+        elif ct.lexeme == Lexeme.NOT:
+            not_node = Node(Node.NOT_TYPE)
+            not_node.children.append(self.parse_factor())
+            return not_node
+        elif ct.lexeme == Lexeme.OPEN_PAREN:
+            exp_node = self.parse_expression()
+            self.lex.match(Lexeme.CLOSE_PAREN)
+            return exp_node
         elif ct.type_ == Token.WORD_TYPE and ct.lexeme not in Lexeme.RESERVED:
             nt = self.lex.current_token()
             if nt.lexeme == Lexeme.OPEN_PAREN:
@@ -54,20 +66,12 @@ class ExpressionParser:
                 return self.parse_function_call()
             else:
                 return Node(Node.VARIABLE_TYPE, ct.lexeme, ct)
-        elif ct.lexeme == Lexeme.SUB:
-            negation_node = Node(Node.SUB_TYPE)
-            negation_node.children.append(self.parse_factor())
-            return negation_node
-        elif ct.lexeme == Lexeme.OPEN_PAREN:
-            exp_node = self.parse_expression()
-            self.lex.match(Lexeme.CLOSE_PAREN)
-            return exp_node
         else:
             illegal_token(ct, "Expected number, variable, function call or subexpression.")
 
     def parse_function_call(self):
         ct = self.lex.current_token()
-        call_node = Node(Node.FUNC_CALL_TYPE, ct.lexeme)
+        call_node = Node(Node.FUNC_CALL_TYPE, ct.lexeme, ct)
         self.lex.next_token()
         self.lex.match(Lexeme.OPEN_PAREN)
         ct = self.lex.current_token()

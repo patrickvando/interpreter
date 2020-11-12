@@ -49,6 +49,7 @@ class Lexer:
         line = self.f.readline()
         while (re.search("^(\s)*#", line)):
             line = self.f.readline()
+            self.line_num += 1
         if not line:
             self.f.close()
             return False
