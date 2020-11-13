@@ -1,2 +1,12 @@
-a = (9 + 1);
-b = (10 or 3) % (5 + (3 * 6) + 4);
+#comment here
+func gcd(x, y){
+    if(x < y){
+        x, y = y, x;
+    }
+    if (x % y == 0){
+        return y;
+    }
+    return gcd(y, x % y);
+}
+read(x, y);
+print(gcd(x, y));

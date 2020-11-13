@@ -45,6 +45,10 @@ class ExpressionInterpreter:
             return int(self.interpret_expression(left) >= self.interpret_expression(right))
         elif node.type_ == Node.NUMBER_TYPE:
             return int(node.value)
+        elif node.type_ == Node.PRINT_TYPE:
+            return self.interpret_print(node)
+        elif node.type_ == Node.READ_TYPE:
+            return self.interpret_read(node)
         else:
             illegal_node(node)
 
@@ -73,8 +77,29 @@ class ExpressionInterpreter:
         self.sym_tab.append(dict(zip([(param.type_, param.value) for param in param_node.children], arg_vals)))
         sinterpreter = StatementInterpreter(self.sym_tab)
         ret_val =  sinterpreter.interpret_statement_list(slist_node)
+        self.sym_tab.pop()
         if ret_val == None:
             return 0
         return ret_val
+
+    def interpret_print(self, node):
+        einterpreter = ExpressionInterpreter(self.sym_tab)
+        e_results = []
+        for expr in node.children:
+            e_results.append(einterpreter.interpret_expression(expr))
+        print(", ".join([str(result) for result in e_results]))
+        return 0
+
+    import re
+    def interpret_read(self, node):
+        einterpreter = ExpressionInterpreter(self.sym_tab)
+        vars_ = []
+        for var in node.children:
+            res = input()
+            while not re.match('^-?[0-9]+', res):
+                print("Please input a valid integer.")
+                res = input()
+            self.sym_tab[-1][(Node.VARIABLE_TYPE, var.value)] = int(res)
+        return 0
 
 from Interpreter.StatementInterpreter import StatementInterpreter

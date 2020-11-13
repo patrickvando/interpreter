@@ -8,7 +8,6 @@ lexer = Lexer("test.oats")
 parser = StatementParser(lexer)
 root = parser.parse_main()
 root.print_recursive()
-sym_tab = []
+sym_tab = [dict()]
 interpreter = StatementInterpreter(sym_tab)
 interpreter.interpret_statement_list(root)
-print(sym_tab)

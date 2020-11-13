@@ -71,7 +71,10 @@ class ExpressionParser:
 
     def parse_function_call(self):
         ct = self.lex.current_token()
-        call_node = Node(Node.FUNC_CALL_TYPE, ct.lexeme, ct)
+        if ct.lexeme in Lexeme.BUILT_INS:
+            call_node = Node(Node.LEXEME_TO_TYPE[ct.lexeme])
+        else:
+            call_node = Node(Node.FUNC_CALL_TYPE, ct.lexeme, ct)
         self.lex.next_token()
         self.lex.match(Lexeme.OPEN_PAREN)
         ct = self.lex.current_token()
