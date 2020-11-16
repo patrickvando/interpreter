@@ -1,8 +1,0 @@
-check if variable is a reserved word, or has been defined as a function (?) elsewhere -> in compiler?
-
-break out "lexer" into the common file?
-add ++ ->>>> might be necessary for traditional for loop
-just leave out pre-increment?
-parse comment
-unexpected in filename
-remove unnecessary stuff from Node(Node.TYPE, token<<- here, token)
