@@ -96,3 +96,6 @@ def uninitialized_function(node):
 
 def argument_length_mismatch(node):
     exit('Argument length mismatch for function "{}" called on line {}.'.format(node.token.lexeme, node.token.line_num))
+
+def div_by_zero(node):
+    exit('Attempted division by zero on line {}.'.format(node.token.line_num))

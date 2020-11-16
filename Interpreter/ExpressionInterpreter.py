@@ -22,9 +22,15 @@ class ExpressionInterpreter:
         elif node.type_ == Node.MULT_TYPE:
             return self.interpret_expression(left) * self.interpret_expression(right)
         elif node.type_ == Node.DIV_TYPE:
-            return self.interpret_expression(left) // self.interpret_expression(right)
+            denom = self.interpret_expression(right)
+            if denom == 0:
+                div_by_zero(node)
+            return self.interpret_expression(left) // denom
         elif node.type_ == Node.MOD_TYPE:
-            return self.interpret_expression(left) % self.interpret_expression(right)
+            denom = self.interpret_expression(right)
+            if denom == 0:
+                div_by_zero(node)
+            return self.interpret_expression(left) % denom
         elif node.type_ == Node.AND_TYPE:
             return (self.interpret_expression(left) != 0) * (self.interpret_expression(right) != 0)
         elif node.type_ == Node.OR_TYPE:
@@ -94,12 +100,13 @@ class ExpressionInterpreter:
     def interpret_read(self, node):
         einterpreter = ExpressionInterpreter(self.sym_tab)
         vars_ = []
-        for var in node.children:
-            res = input()
-            while not re.match('^-?[0-9]+', res):
-                print("Please input a valid integer.")
-                res = input()
+        if len(node.children) != 0:
+            argument_length_mismatch(node)
+        res = input('input an integer: ')
+        while not re.match('^-?[0-9]+$', res):
+            print("Not a valid integer.")
+            res = input('input an integer: ')
             self.sym_tab[-1][(Node.VARIABLE_TYPE, var.value)] = int(res)
-        return 0
+        return int(res)
 
 from Interpreter.StatementInterpreter import StatementInterpreter
