@@ -1,13 +1,15 @@
 import unittest
-from Lexer.Lexer import Lexer, Token
+from Common.Common import *
+from Lexer.Lexer import Lexer
 
 class TestLexerMethods(unittest.TestCase):
     def setUp(self):
-        self.lex = Lexer("Test/Examples/Test.oats")
+        self.lex = Lexer("Test/Examples/gcd.oats")
         self.expected_tokens = [
-                Token("word", "func", 1),
-                Token("word", "hello_world", 1),
-                Token("special", "(", 1)
+                Token("special", "func", 1),
+                Token("word", "gcd", 1),
+                Token("special", "(", 1),
+                Token("word", "x", 1), Token("special", ",", 1), Token("word", "y", 1), Token("special", ")", 1), Token("special", "{", 1),
                 ]
 
     def tearDown(self):
