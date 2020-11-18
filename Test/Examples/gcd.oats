@@ -1,3 +1,4 @@
+# Calculate the greatest common divisor of two numbers using Euclid's algorithm
 func gcd(x, y){
     if (x < y){
         x, y = y, x;
@@ -7,4 +8,4 @@ func gcd(x, y){
     }
     return gcd(y, x % y);
 }
-print(gcd(read(), read() ));
+print(gcd(read(), read()));
