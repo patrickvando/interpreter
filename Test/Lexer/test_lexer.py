@@ -2,7 +2,7 @@ import unittest
 from Common.Common import *
 from Lexer.Lexer import Lexer
 
-class TestLexerMethods(unittest.TestCase):
+class TestLexer(unittest.TestCase):
     def setUp(self):
         self.lex = Lexer("Test/Examples/gcd.oats")
         self.expected_tokens = [

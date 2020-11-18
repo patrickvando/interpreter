@@ -3,7 +3,7 @@ from Common.Common import *
 from Lexer.Lexer import Lexer
 from Parser.StatementParser import StatementParser
 
-class TestParserMethods(unittest.TestCase):
+class TestParser(unittest.TestCase):
     def setUp(self):
         self.lex = Lexer("Test/Examples/gcd.oats")
         self.sparser = StatementParser(self.lex)
@@ -24,7 +24,8 @@ class TestParserMethods(unittest.TestCase):
     def tearDown(self):
         self.lex.f.close()
 
-    def testParseMain(self):
+    def testParser(self):
+        """Verify the correctness of the Abstract Syntax Tree produced by the Parser for the "gcd.oats" test file."""
         root = self.sparser.parse_main()
         stack = [root]
         for expected_node in self.expected_nodes:
