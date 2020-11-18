@@ -1,9 +1,13 @@
 from Common.Common import *
 class ConstructParser:
+    """The ConstructParser is used to assemble the stream of tokens from the Lexer into an Abstract Syntax Tree.
+
+    The ConstructParser specifically parses while/for loops, if/elseif/else statements, and function declarations."""
     def __init__(self, lexer):
         self.lex = lexer
 
     def parse_construct(self):
+        """Parse while/for loops, if/elseif/else statements, and function declarations."""
         ct = self.lex.current_token()
         if ct.lexeme == Lexeme.FUNC:
             return self.parse_function_declaration()
@@ -17,6 +21,7 @@ class ConstructParser:
             illegal_token(ct, "Not a valid construct.")
 
     def parse_function_declaration(self):
+        """Parse a function declaration."""
         ct = self.lex.next_token()
         check_valid_name(ct) 
         func_def_node = Node(Node.FUNC_DEF_TYPE, ct.lexeme, ct)
@@ -47,6 +52,7 @@ class ConstructParser:
         return func_def_node
     
     def parse_if(self):
+        """Parse an if/elseif/else statement."""
         self.lex.match(Lexeme.IF)
         self.lex.match(Lexeme.OPEN_PAREN)
         ct = self.lex.current_token()
@@ -70,6 +76,7 @@ class ConstructParser:
         return if_node
     
     def parse_while(self):
+        """Parse a while statement."""
         self.lex.match(Lexeme.WHILE)
         self.lex.match(Lexeme.OPEN_PAREN)
         ct = self.lex.current_token()
@@ -81,6 +88,7 @@ class ConstructParser:
         return while_node
 
     def parse_for(self):
+        """Parse a for statement."""
         self.lex.match(Lexeme.FOR)
         self.lex.match(Lexeme.OPEN_PAREN)
         for_node = Node(Node.FOR_TYPE)
@@ -96,6 +104,7 @@ class ConstructParser:
         return for_node
 
     def parse_body(self):
+        """Parse the statements in the body of a for/while loop, if/elseif/else statement, or function declaration."""
         self.lex.match(Lexeme.OPEN_BRACE)
         ct = self.lex.current_token()
         slist_node = Node(Node.STATEMENT_LIST_TYPE)

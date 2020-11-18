@@ -1,9 +1,15 @@
 from Common.Common import *
 class ExpressionInterpreter:
+    """The ExpressionInterpreter is used to execute the expressions in an Abstract Syntax Tree.
+
+    The ExpressionInterpreter executes all operator nodes using a postorder traversal of the tree. Operator precedence has been encoded into the structure of the tree by the Parser."""
     def __init__(self, symbol_table):
         self.sym_tab = symbol_table
 
     def interpret_expression(self, node):
+        """Execute an operator.
+        
+        Most operators are binary (like '*', '/', '<', ...), and operate on two children to produce a single result. Some operators are unary (like 'not') and operate on a single child. Some operators can be either, depending on how many children they have (like '-')."""
         if len(node.children) == 2:
             left, right = node.children
         elif len(node.children) == 1:
@@ -59,6 +65,7 @@ class ExpressionInterpreter:
             illegal_node(node)
 
     def interpret_variable(self, node):
+        """Get the value of a variable by looking it up in the symbol table."""
         ind = len(self.sym_tab) - 1
         while ind >= 0 and (node.VARIABLE_TYPE, node.value) not in self.sym_tab[ind]:
             ind -= 1
@@ -67,6 +74,7 @@ class ExpressionInterpreter:
         return self.sym_tab[ind][(node.VARIABLE_TYPE, node.value)]
 
     def interpret_func_call(self, node):
+        """Execute a function call by pushing a new frame onto the symbol table, loading the parameters of the function call into that frame, and then executing the statements in the function definition."""
         ind = len(self.sym_tab) - 1
         while ind >= 0 and (node.FUNC_DEF_TYPE, node.value) not in self.sym_tab[ind]:
             ind -= 1
@@ -89,6 +97,7 @@ class ExpressionInterpreter:
         return ret_val
 
     def interpret_print(self, node):
+        """Execute Oats' built in 'print' function by calling Python's 'print'."""
         einterpreter = ExpressionInterpreter(self.sym_tab)
         e_results = []
         for expr in node.children:
@@ -98,6 +107,7 @@ class ExpressionInterpreter:
 
     import re
     def interpret_read(self, node):
+        """Execute Oat's built in 'read' function by calling Python's 'input'."""
         einterpreter = ExpressionInterpreter(self.sym_tab)
         vars_ = []
         if len(node.children) != 0:

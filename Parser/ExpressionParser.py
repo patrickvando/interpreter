@@ -1,9 +1,13 @@
 from Common.Common import *
 class ExpressionParser:
+    """The ExpressionParser is used to assemble the stream of tokens from the Lexer into an Abstract Syntax Tree.
+
+    The ExpressionParser specifically handles operator precedence in expressions. The different levels of precedence, in increasing order, are labelled "expression", "simple expression", "term", and "factor". For example, addition is considered a "simple expression" operator and has a lower level of precedence than multiplication, which is considered a "term" operator)."""
     def __init__(self, lexer):
         self.lex = lexer
 
     def parse_expression(self, left=None):
+        """Parse the "expression" operators after all "simple expression", "term", and "factor" operators have been parsed."""
         if not left:
             left = self.parse_simple_expression()
         ct = self.lex.current_token()
@@ -17,6 +21,7 @@ class ExpressionParser:
             return left
 
     def parse_simple_expression(self, left=None):
+        """Parse the "simple expression" operators after all the "term" and "factor" operators have been parsed."""
         if not left:
             left = self.parse_term()
         ct = self.lex.current_token()
@@ -30,6 +35,7 @@ class ExpressionParser:
             return left
 
     def parse_term(self, left=None):
+        """Parse the "term" operators after all the "factor" operators have been parsed."""
         if not left:
             left = self.parse_factor()
         ct = self.lex.current_token()
@@ -43,6 +49,7 @@ class ExpressionParser:
             return left
 
     def parse_factor(self):
+        """Parse the "factor" operators."""
         ct = self.lex.current_token()
         self.lex.next_token()
         if ct.type_ == Token.NUMBER_TYPE:
@@ -70,6 +77,7 @@ class ExpressionParser:
             illegal_token(ct)
 
     def parse_function_call(self):
+        """Parse a function call."""
         ct = self.lex.current_token()
         if ct.lexeme in Lexeme.BUILT_INS:
             call_node = Node(Node.LEXEME_TO_TYPE[ct.lexeme], token=ct)

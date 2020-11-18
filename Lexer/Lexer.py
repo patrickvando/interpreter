@@ -2,6 +2,9 @@ import re
 import sys
 from Common.Common import *
 class Lexer:
+    """The Lexer is used to break down an Oats source file into Tokens.
+    
+    The raw text of the source file is read line by line and translated into number, symbol, or word Tokens."""
     def __init__(self, filename):
         try:
             self.f = open(filename)
@@ -13,14 +16,21 @@ class Lexer:
         self.current = -1
 
     def next_token(self):
+        """Get the next token from the token buffer.
+        
+        If the next token is outside of the token buffer, the token buffer will be expanded by processing the next line."""
         self.current += 1
         return self.current_token()
 
     def prev_token(self):
+        """Get the previous token from the token buffer.
+        
+        If the previous token is outside the token buffer, None will be returned."""
         self.current -= 1
         return self.current_token()
 
     def current_token(self):
+        """Get the current token."""
         self.current = min(len(self.token_buffer), self.current)
         self.current = max(-1, self.current)
         while self.current == len(self.token_buffer):
@@ -33,10 +43,12 @@ class Lexer:
         return self.token_buffer[self.current]
 
     def consume(self):
+        """Empty the token buffer."""
         self.token_buffer = self.token_buffer[self.current + 1:]
         self.current = -1
 
     def match(self, expected_lexeme):
+        """Consume the current token if its lexeme matches the expected lexeme."""
         ct = self.current_token()
         self.consume()
         if ct.lexeme != expected_lexeme:
@@ -44,10 +56,11 @@ class Lexer:
         self.next_token()
 
     def process_line(self):
+        """Find all tokens in the next line, add them to the token buffer."""
         if self.f.closed:
             return False
         line = self.f.readline()
-        while (re.search("^(\s)*#", line)):
+        while (re.search("^(\s)*#", line)): # Throw away commented lines.
             line = self.f.readline()
             self.line_num += 1
         if not line:
