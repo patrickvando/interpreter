@@ -1,8 +1,6 @@
-
-
 # Oats Programming Language and Interpreter
 
-Oats is a procedural programming language that allows you to write simple programs to manipulate integers. The Oats Interpreter allows you to run these programs.
+Oats is a procedural programming language that allows you to write simple programs to manipulate integers.
 
 `gcd.oats` is a good example of an Oats program:
 ```
@@ -18,7 +16,7 @@ func gcd(x, y){
 }
 print(gcd(read(), read()));
 ```
-`gcd.oats` can be run using the Oats Interpreter:
+`gcd.oats` can be run using the Oats interpreter:
 ```
 $ python oats.py gcd.oats
 input an integer: 1071
@@ -200,3 +198,14 @@ The *read* function automatically prints the prompt `input an integer:` to stdou
 For example,
 
 `a = read();`
+
+## Comments
+
+Single line comments can be made in Oats using `#`.
+
+For example,
+
+```
+# Print the sum of x and y.
+print(x + y);
+```
