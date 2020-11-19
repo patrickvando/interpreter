@@ -84,14 +84,8 @@ func identifier (arg1, arg2, arg3) {
 For example:
 
 ```
-func factorial (x){
-    if(x < 0 ){
-        return -1;
-    } elseif(x == 0){
-        return 1;
-    } else {
-        return x * factorial(x - 1);
-    }
+func add (x, y){
+    return x + y;
 }
 ```
 
@@ -103,7 +97,7 @@ Function calls take the following form:
 
 For example:
 
-`factorial(9);`
+`add(5 + 6);`
 
 ## Conditionals
 
@@ -146,8 +140,8 @@ while (expression) {
 
 For example,
 ```
-int x = 1;
-while (x < 1){
+x = 0;
+while (x < 10){
     x = x + 1;
 }
 ```
