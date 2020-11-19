@@ -5,11 +5,11 @@ Oats is a procedural programming language that allows you to write simple progra
 `gcd.oats` is a good example of an Oats program:
 ```
 # Calculate the greatest common divisor of two numbers using Euclid's algorithm
-func gcd(x, y){
-    if (x < y){
+func gcd(x, y) {
+    if (x < y) {
         x, y = y, x;
     }
-    if (x % y == 0){
+    if (x % y == 0) {
         return y;
     }
     return gcd(y, x % y);
@@ -76,7 +76,7 @@ For example,
 Function declarations take the following form:
 
 ```
-func identifier (arg1, arg2, arg3) {
+func identifier(arg1, arg2, arg3) {
     *body*
 }
 ```
@@ -84,7 +84,7 @@ func identifier (arg1, arg2, arg3) {
 For example:
 
 ```
-func add (x, y){
+func add(x, y) {
     return x + y;
 }
 ```
@@ -117,7 +117,7 @@ For example,
 
 ```
 x = 1;
-if ( x == 1) {
+if (x == 1) {
     print(1);
 } elseif (x == 2) {
     print(2);
@@ -141,7 +141,7 @@ while (expression) {
 For example,
 ```
 x = 0;
-while (x < 10){
+while (x < 10) {
     x = x + 1;
 }
 ```
@@ -159,7 +159,7 @@ for (assignment; expression; assignment) {
 For example,
 ```
 total = 0;
-for(k = 0; k < 10; k = k + 1){
+for (k = 0; k < 10; k = k + 1) {
     total = total + k; 
 }
 ```
