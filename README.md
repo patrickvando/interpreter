@@ -1,6 +1,6 @@
 # Oats Programming Language and Interpreter
 
-Oats is a procedural programming language that allows you to write simple programs to manipulate integers.
+Oats is a toy procedural programming language that allows you to write simple programs to manipulate integers.
 
 `gcd.oats` is a good example of an Oats program:
 ```
@@ -27,9 +27,7 @@ input an integer: 462
 
 ## Overview
 
-Oats is a programming language stripped down to the essentials. It includes the most important features of procedural programming - conditionals, loops, functions, and recursion - and discards the rest. The only allowed data type is integers. For I/O, Oats includes built in `read` and `print` functions.
-
-Syntactically, Oats is like a hybrid of Java and Python, but without the constant verbosity of the former or the occasional abstruseness of the latter.
+Oats is a toy programming language. It includes conditionals, loops, functions, and recursion. The only allowed data type is integers. For I/O, Oats includes built in `read` and `print` functions.
 
 ## How to run
 
